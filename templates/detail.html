@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <style>
+        .account{
+            width: 1200px;
+            border: 1px solid #dddddd;
+            height: 800px;
+
+
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: auto;
+
+        }
+        .account h1{
+            text-align: center;
+        }
+        .outer{
+            width:595px;
+            border: 1px solid #aaaaaa;
+            height: 800px;
+            float:left;
+
+        }
+        .inner{
+            width: 295px;
+            border: 1px solid #dddddd;
+            height: 60px;
+            float:left;
+
+            padding: 10px;
+        }
+        .B-color{color:blue;}
+
+        .right{
+            width:590px;
+            border: 1px solid #aaaaaa;
+            height: 400px;
+            float:left;
+        }
+        .font{
+        font-weight: bold;
+        }
+
+
+
+
+
+
+
+    </style>
+</head>
+<body>
+<div class="account">
+    <h1>Data details</h1>
+    <div class="outer">
+        <div class="inner">
+            Dataset name
+        </div>
+        <div class="inner">
+            <div class="B-color">{{info[0]["Name"]}}</div>
+        </div>
+
+        <div class="inner">
+            Seller name
+        </div>
+        <div class="inner">
+            <div class="B-color">{{info[0]["Owner"]}}</div>
+        </div>
+
+        <div class="inner">
+            Field
+        </div>
+        <div class="inner">
+            <div class="B-color">{{info[0]["Field"]}}</div>
+        </div>
+
+        <div class="inner">
+            Size
+        </div>
+        <div class="inner">
+            <div class="B-color">{{info[0]["Size"]}}</div>
+        </div>
+
+        <div class="inner">
+            Base price
+        </div>
+        <div class="inner">
+            <div class="B-color">{{info[0]["BasePrice"]}}</div>
+        </div>
+
+        <div class="inner">
+            Dataset No.
+        </div>
+        <div class="inner">
+            <div class="B-color">{{info[0]["DID"]}}</div>
+        </div>
+
+        <div class="inner">
+            Create date
+        </div>
+        <div class="inner">
+            <div class="B-color">{{info[0]["CreateDate"]}}</div>
+        </div>
+
+        <div class="inner">
+            Keyword
+        </div>
+        <div class="inner">
+            <div class="B-color">{%for i in keyword%}{{i}}&emsp;&emsp;{%endfor%}</div>
+        </div>
+
+        <div class="inner">
+            Sale number
+        </div>
+        <div class="inner">
+            <div class="B-color">{{info[0]["SaleNum"]}}</div>
+        </div>
+
+
+    </div>
+    <div class="outer">
+        <div class="right">
+            <div class = "table-responsive">
+                <table class="table table-striped">
+                    <tr>
+                        {%for key in data[0].keys()%}
+                        <th> {{key}}</th>
+                        {%endfor%}
+                    </tr>
+                    {%for i in range(7)%}
+                    <tr>
+                        {%for key in data[0].keys()%}
+                        <td>{{data[i][key]}}</td>
+                        {%endfor%}
+                    </tr>
+                    {%endfor%}
+                </table>
+            </div>
+            {%if Role == "Buyer"%}
+        </div>
+
+        <div class="right">
+            <form action="/detail/{{DID}}/" method="POST" class="form-inline">
+                <div class="form-group">
+                    <label>SQL query</label>
+                    <input type="text" class="form-control" name="SQL query"
+                           placeholder="Please input the SQL query">
+                </div>
+                <button type="submit" class="btn btn-default" type="submit" value="Check price" name="checkprice">Check
+                    price
+                </button>
+
+                <div class="font">
+                    Query price:{{price}}
+                    <button type="submit" class="btn btn-default" type="submit" value="Take order" name="takeorder">Take
+                    order
+                </button>
+                </div>
+                
+            </form>
+            {%endif%}
+            {% with messages = get_flashed_messages() %}
+            <div style = "color: red">{{ messages[0] }}</div>
+            {% endwith %}
+            <div>
+            <a href="/" >Return</a>
+            </div>
+        </div>
+    
+    </div>
+    
+</div>
+
+</body>
+</html>

@@ -1,0 +1,61 @@
+//新建一个transaction数据库
+drop database if exists transaction;
+create database transaction;
+
+//在transaction数据库里面建立User表
+use transaction;
+
+drop table if exists User;
+create table User(
+UID int not null auto_increment primary key,
+Name varchar(16) not null,
+Password varchar(64) not null,
+Role char(6) not null
+);
+
+//在transaction数据库里面建立Dataset表
+drop table if exists Dataset;
+create table Dataset(
+DID int not null auto_increment primary key,
+Name varchar(32) not null,
+Owner varchar(16) not null,
+Field varchar(16) not null,
+Size int not null,
+Keywords varchar(64) not null,
+CreateDate datetime not null,
+SaleNum int not null,
+State tinyint not null,
+PriceStrategy varchar(16) not null,
+BasePrice decimal(10,3) not null,
+Pricecoefficient decimal(6,3) not null,
+Sensitivity decimal(6,3) not null
+);
+
+//在transaction数据库里面建立Order表
+drop table if exists Order_table;
+create table Order_table(
+OID int not null auto_increment primary key,
+DName varchar(32) not null,
+Seller varchar(16) not null,
+Buyer varchar(16) not null,
+CreateDate datetime not null,
+BasePrice decimal(10,3) not null,
+SaleDataNum int not null,
+AccessDataNum int not null,
+Pricecoefficient decimal(6,3) not null,
+Sensitivity decimal(6,3) not null,
+TotalCompleteness int not null,
+PriceStrategy varchar(16) not null,
+Price decimal(10,3) not null,
+SQLquery varchar(128)
+);
+
+
+
+//初始注册一个Role是Admin的用户
+insert into User(Name,Password,Role) value("root","root123","Admin");
+//其他用户的注册通过网站前端来注册
+
+//seller上传的数据传输到dataset数据库里，新建一个dataset数据库
+create database dataset;
+

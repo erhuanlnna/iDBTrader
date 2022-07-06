@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <style>
+        .account{
+            width: 920px;
+
+            height: 800px;
+
+
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: auto;
+
+        }
+        .account h1{
+            text-align: center;
+        }
+        .inner{
+            width: 920px;
+            border: 1px solid #dddddd;
+            height: 80px;
+            float:left;
+
+            padding: 10px;
+        }
+
+        .inner button{float:right;}
+
+        .table{
+            width: 920px;
+            border: 1px solid #dddddd;
+            height: 300px;
+            float:left;
+            overflow-y: scroll;
+        }
+
+
+    </style>
+</head>
+<body>
+<div class="account">
+    <h1>All datasets&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Identity: {{Role}}</h1>
+    <form class="form-inline" action="{{ url_for('index') }}" method="POST">
+        <div class="inner">
+
+            <div class="form-group">
+                <label for="keyword1">Dataset Name</label>
+                <input type="text" class="form-control" id="keyword1" placeholder="Name" name="keyword">
+            </div>
+            <div class="form-group">
+                <label for="DID1">Dataset No.</label>
+                <input type="text" class="form-control" id="DID1" placeholder="Dataset No." name="did">
+            </div>
+        </div>
+
+        <div class="inner">
+            <div class="form-group">
+                <label for="sellername1">Seller name</label>
+                <input type="text" class="form-control" id="sellername1" placeholder="seller name" name="seller_name">
+            </div>
+        </div>
+
+        <div class="inner">
+            <div class="form-group">
+                <label for="datefrom1">Create date</label>
+                <input type="text" class="form-control" id="datefrom1" placeholder="begin" name="begin_date">
+            </div>
+
+            <div class="form-group">
+                <label for="dateto1">to</label>
+                <input type="text" class="form-control" id="dateto1" placeholder="end" name="end_date">
+            </div>
+
+        </div>
+
+        <div class="inner">
+            <button type="reset" value="Reset" name="reset" class="btn btn-default">Reset</button>
+            <button type="submit" value="Search" class="btn btn-primary">Search</button>
+        </div>
+
+
+    </form>
+
+
+    <div class="table">
+        <table class="table table-hover">
+            <tr>
+                <th>Dataset No.</th>
+                <th>Name</th>
+                <th>Seller name</th>
+                <th>Field</th>
+                <th>Create date</th>
+                <th>Size</th>
+                <th>Sale number</th>
+                <th>Details</th>
+            </tr>
+            {%for data in all_data%}
+            <tr>
+                <td>{{data["DID"]}}</td>
+                <td>{{data["Name"]}}</td>
+                <td>{{data["Owner"]}}</td>
+                <td>{{data["Field"]}}</td>
+                <td>{{data["CreateDate"]}}</td>
+                <td>{{data["Size"]}}</td>
+                <td>{{data["SaleNum"]}}</td>
+                <td><a href="/detail/{{data["DID"]}}/">Links</a></td>
+            </tr>
+            {%endfor%}
+        </table>
+    </div>
+
+    <div class="inner">
+        <h4>Edit your password</h4>
+        <a href="/edit_pwd">Click here to edit your password</a>
+    </div>
+
+    <div class="inner">
+        <h4>Order management</h4>
+        <a href="/order_management">Click here to browse your order</a>
+    </div>
+
+    {%if Role == "Seller"%}
+    <div class="inner">
+        
+        <h4>Manage your dataset</h4>
+        <a href="/manage_dataset">Click here to manage your dataset</a>
+        
+    </div>
+
+
+    <div class="inner">
+        <h4>Upload new dataset</h4>
+        <a href="/upload">Click here to upload new dataset</a>
+    </div>
+    {%endif%}
+
+    <div class="inner">{% with messages = get_flashed_messages() %}
+        <div style = "color: red">{{ messages[0] }}</div>
+        {% endwith %}
+    </div>
+    
+</div>
+</body>
+</html>
