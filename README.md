@@ -14,6 +14,8 @@ datadir=Your installation directory\\data
 
 ###################################################
 
-4. delete all files and folders under folder "upload"
-5. Run mysql, run the code in file "database_code.txt"
-6. Run app.py to start the website
+4. In administrator mode, open command prompt, type "(Your installation directory)\bin\mysqld.exe --initialize-insecure"
+5. delete all files and folders under folder "upload"
+6. Run mysql, run the code in file "database_code.txt"
+7. In file "dataset.py", edit global variable "user" and "pwd" to the username and password of your local database
+8. Run app.py to start the website

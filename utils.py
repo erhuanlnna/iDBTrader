@@ -35,8 +35,8 @@ def search_dataset(keyword, did, seller_name, begin_date, end_date):
     return select(sql, "transaction")
 
 # 判断sql语句的正确性
-def isLegal(sql):
-    return True
+# def isLegal(sql):
+#     return True
 
 # 定价函数
 def getSQLPrice():

@@ -2,7 +2,7 @@ from flask import Flask,render_template, redirect, url_for, flash, request
 import dataset
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 import os
-from utils import query_user, search_all_saledataset, search_order, search_seller_dataset, search_dataset, isLegal, getSQLPrice, searchALLOrder,searchOrderOfBuyer,searchOrderOfSeller
+from utils import query_user, search_all_saledataset, search_order, search_seller_dataset, search_dataset, getSQLPrice, searchALLOrder,searchOrderOfBuyer,searchOrderOfSeller
 from datetime import datetime
 
 # 定义price_coefficient 和 sensitivity的默认值, admin可以对其进行修改。
