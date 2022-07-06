@@ -14,5 +14,6 @@ datadir=Your installation directory\\data
 
 ###################################################
 
-4. Run mysql, run the code in file "database_code.txt"
-5. Run app.py to start the website
+4. delete all files and folders under folder "upload"
+5. Run mysql, run the code in file "database_code.txt"
+6. Run app.py to start the website
