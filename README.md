@@ -19,3 +19,10 @@ datadir=Your installation directory\\data
 6. Run mysql, run the code in file "database_code.txt"
 7. In file "dataset.py", edit global variable "user" and "pwd" to the username and password of your local database
 8. Run app.py to start the website
+
+
+
+
+
+
+参考网址：https://www.runoob.com/mysql/mysql-install.html
