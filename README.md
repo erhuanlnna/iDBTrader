@@ -26,3 +26,4 @@ datadir=Your installation directory\\data
 
 
 参考网址：https://www.runoob.com/mysql/mysql-install.html
+对照着看效果更佳
