@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>order details admin</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <style>
+
+        .account{
+            width: 810px;
+            border: 1px solid #dddddd;
+            height: 800px;
+
+
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: auto;
+
+        }
+        .account h1{
+            text-align: center;
+        }
+        .inner{
+            width: 200px;
+            border: 1px solid #dddddd;
+            height: 50px;
+            float:left;
+
+            padding: 10px;
+        }
+        .B-color{color:blue;}
+
+    </style>
+</head>
+<body>
+<div class="account">
+    <h1>Order details</h1>
+    <div class="inner"></div>
+    <div class="inner"></div>
+    <div class="inner"></div>
+    <div class="inner"></div>
+
+    <div class="inner">
+        <div>Dataset name</div>
+    </div>
+    <div class="inner">
+        <div class="B-color">{{info[0]["DName"]}}</div>
+    </div>
+    <div class="inner">
+        <div>Price coefficient</div>
+    </div>
+    <div class="inner">
+        <div class="B-color">{{info[0]["Pricecoefficient"]}}</div>
+    </div>
+    <div class="inner">
+        <div>Seller name</div>
+    </div>
+    <div class="inner">
+        <div class="B-color">{{info[0]["Seller"]}}</div>
+    </div>
+    <div class="inner">
+        <div>Sensitivity</div>
+    </div>
+    <div class="inner">
+        <div class="B-color">{{info[0]["Sensitivity"]}}</div>
+    </div>
+    <div class="inner">
+        <div>Buyer name</div>
+    </div>
+    <div class="inner">
+        <div class="B-color">{{info[0]["Buyer"]}}</div>
+    </div>
+    <div class="inner">
+        <div>Base price</div>
+    </div>
+    <div class="inner">
+        <div class="B-color">{{info[0]["BasePrice"]}}</div>
+    </div>
+    <div class="inner">
+        <div>Sale data num</div>
+    </div>
+    <div class="inner">
+        <div class="B-color">{{info[0]["SaleDataNum"]}}</div>
+    </div>
+    <div class="inner">
+        <div>Access data num</div>
+    </div>
+    <div class="inner">
+        <div class="B-color">{{info[0]["AccessDataNum"]}}</div>
+    </div>
+    <div class="inner">
+        <div>Order No.</div>
+    </div>
+    <div class="inner">
+        <div class="B-color">{{info[0]["OID"]}}</div>
+    </div>
+    <div class="inner">
+        <div>Total completeness</div>
+    </div>
+    <div class="inner">
+        <div class="B-color">{{info[0]["TotalCompleteness"]}}</div>
+    </div>
+    <div class="inner">
+        <div>Create date</div>
+    </div>
+    <div class="inner">
+        <div class="B-color">{{info[0]["CreateDate"]}}</div>
+    </div>
+    <div class="inner">
+        <div>Price strategy</div>
+    </div>
+    <div class="inner">
+        <div class="B-color">{{info[0]["PriceStrategy"]}}</div>
+    </div>
+    <div class="inner"></div>
+    <div class="inner"></div>
+    <div class="inner">
+        <div>Price</div>
+    </div>
+    <div class="inner">
+        <div class="B-color">{{info[0]["Price"]}}</div>
+    </div>
+
+     <div class="inner">
+        <a href="/order_management" >Return</a>
+    </div>
+
+
+
+</div>
+
+
+
+</body>
+</html>

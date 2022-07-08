@@ -126,7 +126,8 @@
         <a href="/order_management">Click here to browse your order</a>
     </div>
 
-    {%if Role == "Seller"%}
+    {%if Role != "Buyer"%}
+
     <div class="inner">
         
         <h4>Manage your dataset</h4>
@@ -134,11 +135,12 @@
         
     </div>
 
-
+    {%if Role == "Seller"%}
     <div class="inner">
         <h4>Upload new dataset</h4>
         <a href="/upload">Click here to upload new dataset</a>
     </div>
+    {%endif%}
     {%endif%}
 
     <div class="inner">{% with messages = get_flashed_messages() %}

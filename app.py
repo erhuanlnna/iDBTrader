@@ -176,6 +176,17 @@ def logout():
     logout_user()
     return 'Logged out successfully!'
 
+# 订单详情界面
+@app.route("/order_detail/<OID>/",methods=["POST","GET"])
+@login_required
+def order_detail(OID):
+    # 基本信息获取
+    sql = "SELECT * FROM order_table WHERE OID = %s"%OID
+    info = dataset.select(sql,"transaction")
+    # GET
+    return render_template("order_detail.html", info = info)   
+
+
 #全局变量用来存储用户的sql语句和数据
 buyer_sql = ""
 buyer_data = {}
@@ -240,6 +251,13 @@ def detail(DID):
             value(\'%s\',\'%s\',\'%s\',\'%s\', %.3f, %d , %d , %.3f, %.3f, %d, \'%s\', %.3f,\'%s\')'''%(DName, Seller, Buyer, Create_Date, Base_Price, Sale_data_num,
             Access_data_num, Price_coefficient, Sensitivity, Total_completeness, Price_strategy, Price, SQLquery)
             dataset.edit(insert_sql, "transaction")
+
+            # 增加售卖次数
+            update_sql = "UPDATE Dataset SET SaleNum = \'%s\' WHERE DID = %s "%(info[0]["SaleNum"] + 1,DID)
+            dataset.edit(update_sql, "transaction")
+            # 重新获取数据
+            sql = "SELECT * FROM Dataset WHERE DID = %s"%DID
+            info = dataset.select(sql,"transaction")
             # 重置data
             buyer_sql = ""
             buyer_data = {}
@@ -258,7 +276,7 @@ def manage_dataset():
     user_info = dataset.select('select * from User where Name = \'%s\'' %current_user.get_id(),'transaction')
     Role = user_info[0]["Role"]
     Name = current_user.get_id()
-    if Role != "Seller":    ##只有seller可以管理数据集
+    if Role == "Buyer":    ##Buyer不可以管理数据集
         flash( "Access denied!" )
         return redirect(url_for('index'))
     if  request.method == "POST":
@@ -271,18 +289,24 @@ def manage_dataset():
         return render_template("manage_dataset.html", Name = Name, all_data = search_data)
         
     # Get
-    all_data = search_seller_dataset(Name)
-    return render_template("manage_dataset.html", Name = Name, all_data = all_data)
+    if Role == "Seller":
+        all_data = search_seller_dataset(Name)
+        return render_template("manage_dataset.html", Name = Name, all_data = all_data)
+    else:
+        all_data = search_all_saledataset()
+        return render_template("manage_dataset.html", Name = Name, all_data = all_data)
 
 # 修改数据集界面界面
 @app.route("/edit_dataset/<DID>/",methods=["POST","GET"])
 @login_required
 def edit_dataset(DID):
     # 基本信息获取
+    user_info = dataset.select('select * from User where Name = \'%s\'' %current_user.get_id(),'transaction')
+    Role = user_info[0]["Role"]
     sql = "SELECT * FROM Dataset WHERE DID = %s"%DID
     info = dataset.select(sql,"transaction")
     # 禁止修改不是自己的的数据集
-    if info[0]["Owner"] != current_user.get_id():
+    if info[0]["Owner"] != current_user.get_id() and Role != "Admin":
         flash("Access denied!")
         return redirect(url_for('index'))
     keyword=info[0]["Keywords"].split(';')
@@ -294,23 +318,23 @@ def edit_dataset(DID):
         if request.form.get('editname') == 'Change':
             newname = request.form["newname"]
             if newname =="":
-                return render_template("edit_dataset.html", keyword=keyword, info = info, DID=DID)
+                return render_template("edit_dataset.html", Role=Role,keyword=keyword, info = info, DID=DID)
             dataset.edit("rename table %s to  %s"%(info[0]["Name"],newname),info[0]["Owner"]) 
             sql = "UPDATE Dataset SET Name = \'%s\' WHERE DID = %s "%(newname,DID)
         elif  request.form.get('editfield') == 'Change':
             newfield = request.form["newfield"]
             if newfield =="":
-                return render_template("edit_dataset.html", keyword=keyword, info = info, DID=DID)
+                return render_template("edit_dataset.html", Role=Role,keyword=keyword, info = info, DID=DID)
             sql = "UPDATE Dataset SET Field = \'%s\' WHERE DID = %s "%(newfield,DID)
         elif  request.form.get('editbaseprice') == 'Change':
             newbaseprice = request.form["newbaseprice"]
             if newbaseprice =="":
-                return render_template("edit_dataset.html", keyword=keyword, info = info, DID=DID)
+                return render_template("edit_dataset.html", Role=Role,keyword=keyword, info = info, DID=DID)
             sql = "UPDATE Dataset SET Baseprice = \'%s\' WHERE DID = %s "%(newbaseprice,DID)
         elif  request.form.get('editkeywords') == 'Change':
             newkeywords = request.form["newkeywords"]
             if newkeywords =="":
-                return render_template("edit_dataset.html", keyword=keyword, info = info, DID=DID)
+                return render_template("edit_dataset.html", Role=Role,keyword=keyword, info = info, DID=DID)
             sql = "UPDATE Dataset SET Keywords = \'%s\' WHERE DID = %s "%(newkeywords,DID)
         elif  request.form.get('editstate') == 'Sell/Unsell':
             newstate = info[0]["State"]
@@ -322,15 +346,25 @@ def edit_dataset(DID):
         elif  request.form.get('editstrategy') == 'Change':
             newpricestrategy = request.form["newstrategy"]
             if newpricestrategy =="":
-                return render_template("edit_dataset.html", keyword=keyword, info = info, DID=DID)
+                return render_template("edit_dataset.html", Role=Role,keyword=keyword, info = info, DID=DID)
             sql = "UPDATE Dataset SET PriceStrategy = \'%s\' WHERE DID = %s "%(newpricestrategy,DID)
+        elif  request.form.get('editpricecoefficient') == 'Change':
+            newpricecoefficient = request.form["newpricecoefficient"]
+            if newpricecoefficient =="":
+                return render_template("edit_dataset.html", Role=Role,keyword=keyword, info = info, DID=DID)
+            sql = "UPDATE Dataset SET Pricecoefficient = \'%s\' WHERE DID = %s "%(newpricecoefficient,DID)
+        elif  request.form.get('editsensitivity') == 'Change':
+            newsensitivity = request.form["newsensitivity"]
+            if newsensitivity =="":
+                return render_template("edit_dataset.html", Role=Role,keyword=keyword, info = info, DID=DID)
+            sql = "UPDATE Dataset SET Sensitivity = \'%s\' WHERE DID = %s "%(newsensitivity,DID)
         
         dataset.edit(sql,"transaction") 
         info = dataset.select("SELECT * FROM Dataset WHERE DID = %s"%DID,"transaction")
         keyword=info[0]["Keywords"].split(';')
          
     # GET
-    return render_template("edit_dataset.html", keyword=keyword, info = info, DID=DID)
+    return render_template("edit_dataset.html", Role=Role,keyword=keyword, info = info, DID=DID)
 
 
 
