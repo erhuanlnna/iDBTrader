@@ -19,6 +19,7 @@ def parse_sql_statements(sql_statement : str):
     # check whether there is DISTINCT condition
     if 'distinct' in projections_attributes[0]:
         projection_flag = 1
+        projections_attributes[0] = projections_attributes[0].strip('distinct')
     split_point = len(projections_attributes)
 
     if 'where' in sql_statement:
@@ -183,4 +184,4 @@ if __name__ == "__main__":
     # print(len(whole_results),len(no_duplicate_lineage_set))
     # print(check_price(buyer_sql,'yrq')) ## 返回9个值，1-4为UCA，5-6为QUCA，7-9为系数
     # a,b,c =[1,2,3]
-    print(check_price('select bedrooms, quantity from Data1, Data2 where Data1.id = Data2.id','yrq'))
+    print(check_price("select distinct gender from Data1 where children = 'no'",'yrq'))
