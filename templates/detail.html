@@ -132,41 +132,23 @@
                 <table class="table table-striped">
                     <tr>
                         {%for key in data[0].keys()%}
+                        {%if key != 'empty_num'%}
                         <th> {{key}}</th>
+                        {%endif%}
                         {%endfor%}
                     </tr>
                     {%for i in range(7)%}
                     <tr>
                         {%for key in data[0].keys()%}
+                        {%if key != 'empty_num'%}
                         <td>{{data[i][key]}}</td>
+                        {%endif%}
                         {%endfor%}
                     </tr>
                     {%endfor%}
                 </table>
             </div>
-            {%if Role == "Buyer"%}
-        </div>
-
-        <div class="right">
-            <form action="/detail/{{DID}}/" method="POST" class="form-inline">
-                <div class="form-group">
-                    <label>SQL query</label>
-                    <input type="text" class="form-control" name="SQL query"
-                           placeholder="Please input the SQL query">
-                </div>
-                <button type="submit" class="btn btn-default" type="submit" value="Check price" name="checkprice">Check
-                    price
-                </button>
-
-                <div class="font">
-                    Query price:{{price}}
-                    <button type="submit" class="btn btn-default" type="submit" value="Take order" name="takeorder">Take
-                    order
-                </button>
-                </div>
-                
-            </form>
-            {%endif%}
+            
             {% with messages = get_flashed_messages() %}
             <div style = "color: red">{{ messages[0] }}</div>
             {% endwith %}

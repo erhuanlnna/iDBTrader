@@ -4,10 +4,13 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 import os
 from utils import query_user, search_all_saledataset, search_order, search_seller_dataset, search_dataset, getSQLPrice, searchALLOrder,searchOrderOfBuyer,searchOrderOfSeller
 from datetime import datetime
+import flask_excel
+import SQL
 
 # 定义price_coefficient 和 sensitivity的默认值, admin可以对其进行修改。
-PRICE_COEFFICIENT = 10
-SENSITIVITY = 1
+PRICE_COEFFICIENT = 1
+SENSITIVITY = 0.5
+PRICE_STRATEGY = 'UCA'
 
 #建立一个flask实例
 app = Flask(__name__)
@@ -84,9 +87,19 @@ def register():
     
 
 # 用户主页
+# 全局变量用来存储用户的sql语句和数据
+buyer_sql = ""
+buyer_data = {}
+price = 0      
+owner = ""      
+data = []    
+uca_price= certain_lineage_num= total_completeness= coefficient= sensitivity = 0
+strategy = ''
 @app.route("/",methods=["POST","GET"])
 @login_required
 def index():
+    global buyer_sql,buyer_data, price, owner, data
+    global uca_price, certain_lineage_num, total_completeness, coefficient, sensitivity, strategy
     user_info = dataset.select('select * from User where Name = \'%s\'' %current_user.get_id(),'transaction')
     Role = user_info[0]["Role"]
     if  request.method == "POST":
@@ -96,11 +109,76 @@ def index():
         begin_date = request.form["begin_date"]
         end_date = request.form["end_date"]
         search_data = search_dataset(keyword,did,seller_name,begin_date,end_date)
-        return render_template("index.html", Role = Role, all_data = search_data)
+        if request.form.get('checkprice') == 'Check price':
+            price = 0
+            buyer_sql = request.form["SQL query"]
+            owner = request.form["Seller name"]
+            try:
+                buyer_data = dataset.select(buyer_sql,owner)
+                if buyer_data == ():
+                    flash("Empty set!")
+                    return redirect(url_for("index"))
+                uca_price, certain_lineage_num, total_completeness, base_price_list, query_quality, quca_price, coefficient, sensitivity, strategy = SQL.check_price(buyer_sql, owner)
+            except:
+                buyer_sql = ""
+                flash("illegal SQL query!")
+            else:
+                if strategy == "UCA":
+                    price = uca_price
+                else:
+                    price = quca_price 
+        if request.form.get('takeorder') == 'Take order' and buyer_sql != "" and owner != "":
+            # print(buyer_data)
+            table_list = SQL.parse_sql_statements(buyer_sql)[0]
+            DName = '; '.join(table_list)
+            Seller = owner
+            Buyer = current_user.get_id()
+            Create_Date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            UCAPrice = uca_price
+            Sale_data_num = len(buyer_data)
+            Access_data_num = certain_lineage_num / len(table_list)
+            Price_coefficient = coefficient
+            Sensitivity = sensitivity
+            Total_completeness = total_completeness
+            Price_strategy = strategy
+            Price = price
+            SQLquery = buyer_sql
+            insert_sql = '''insert into order_table(DName, Seller, Buyer, CreateDate, UCAPrice, SaleDataNum,
+            AccessDataNum, Pricecoefficient, Sensitivity, TotalCompleteness, PriceStrategy, Price, SQLquery) 
+            value(\'%s\',\'%s\',\'%s\',\'%s\', %.3f, %d , %d , %.3f, %.3f, %.3f, \'%s\', %.3f,\'%s\')'''%(DName, Seller, Buyer, Create_Date, UCAPrice, Sale_data_num,
+            Access_data_num, Price_coefficient, Sensitivity, Total_completeness, Price_strategy, Price, SQLquery)
+            dataset.edit(insert_sql, "transaction")
+
+            # 增加售卖次数
+            for t_name in table_list:
+                info = dataset.select("SELECT * from Dataset WHERE Name = \'%s\' "%t_name, "transaction")
+                update_sql = "UPDATE Dataset SET SaleNum = \'%s\' WHERE Name = \'%s\' "%(info[0]["SaleNum"] + 1,t_name)
+                dataset.edit(update_sql, "transaction")
+            
+            # 下载 data文件
+            list_data = []
+            list_data.append(list(buyer_data[0]))
+            for i in buyer_data:
+                list_data.append(list(i.values()))
+            data = list_data
+            # # 重新获取数据
+            # sql = "SELECT * FROM Dataset WHERE DID = %s"%DID
+            # info = dataset.select(sql,"transaction")
+            # 重置data
+            buyer_sql = ""
+            buyer_data = {}
+            price = 0
+            owner = ""
+            return redirect(url_for("filedownloads"))
+        return render_template("index.html", Role = Role, all_data = search_data, price =price)
         
     # Get
+    buyer_sql = ""
+    buyer_data = {}
+    price = 0
+    owner = "" 
     all_data = search_all_saledataset()
-    return render_template("index.html", Role = Role, all_data = all_data)
+    return render_template("index.html", Role = Role, all_data = all_data, price = price)
 
 # 上传数据集界面
 @app.route("/upload",methods=["POST","GET"])
@@ -119,28 +197,40 @@ def upload():
         if request.form["base price"] != "":
             base_price= float (request.form["base price"])
         keyword=request.form["keyword"]
-        price_strategy=request.form["new strategy"]
         file = request.files.get("filename")
-        if dname == "" or field == "" or base_price== "" or keyword == "" or price_strategy == "" or file.filename == "":
+        if dname == "" or field == "" or base_price== "" or keyword == "" or file.filename == "":
             flash("Details should not be empty!")
             return redirect(url_for('upload'))
         file_name = file.filename.replace(" ","")
-        purename, suffix=os.path.splitext(file_name)
+        _, suffix=os.path.splitext(file_name)
         if suffix != ".csv":
             flash("Wrong data type(only .csv files are accepted)!")
-            return redirect(url_for('upload'))
+            return redirect(url_for('upload')) 
         if not os.path.exists(os.path.dirname(__file__)+'/upload/' + '/%s/'%owner):
             os.makedirs(os.path.dirname(__file__)+'/upload/' + '/%s/'%owner)
-        file.save(os.path.dirname(__file__)+'/upload/' + '/%s/'%owner + file_name)  # 保存文件
+        file.save(os.path.dirname(__file__)+'/upload/' + '/%s/'%owner + dname + ".csv")  # 保存文件
         #将数据写入用户对应的database里
-        size = dataset.write_data(purename,owner,dname)
+        size = dataset.write_data(owner,dname)
+        para=dataset.select("SELECT PriceStrategy, Pricecoefficient, Sensitivity From Dataset where Owner = \'%s\'"% owner, 'transaction')
+        if para == ():
+            coeff = PRICE_COEFFICIENT
+            sen = SENSITIVITY
+            price_strategy= PRICE_STRATEGY
+        else:
+            coeff = para[0]['Pricecoefficient']
+            sen = para[0]['Sensitivity']
+            price_strategy= para[0]['PriceStrategy']
         # 将数据描述信息存入dataset表里
         insert_sql = '''insert into Dataset(Name, Owner, Field, Size, Keywords, CreateDate, SaleNum,
         State, PriceStrategy, BasePrice, Pricecoefficient, Sensitivity) 
-        value(\'%s\',\'%s\',\'%s\',%d, \'%s\',\'%s\', 0 , 1, \'%s\', %.3f,  %.3f, %.3f)'''%(dname,owner,field,size,keyword,create_date,price_strategy,base_price,PRICE_COEFFICIENT,SENSITIVITY)
+        value(\'%s\',\'%s\',\'%s\',%d, \'%s\',\'%s\', 0 , 1, \'%s\', %.3f,  %.3f, %.3f)'''%(dname,owner,field,size,keyword,create_date,price_strategy,base_price,coeff,sen)
         insert_db = "transaction"
 
         dataset.edit(insert_sql, insert_db)
+        # # 将数据存入User表里
+        # insert_sql = '''UPDATE User SET Pricecoefficient = %.3f, Sensitivity = %.3f, PriceStrategy =\'%s\'
+        # where Name = \'%s\''''%(PRICE_COEFFICIENT,SENSITIVITY, PRICE_STRATEGY, owner)
+        # dataset.edit(insert_sql, insert_db)
 
         flash("Upload successfully!")
         return redirect(url_for('upload'))
@@ -169,6 +259,12 @@ def edit_pwd():
     # GET
     return render_template("edit_pwd.html")
 
+# 下载购买文件
+@app.route('/filedownloads',methods=['get'])
+def filedownloads():
+    global data
+    return flask_excel.make_response_from_array(data,"csv",file_name=u"Data.csv")
+
 # 登出界面
 @app.route('/logout')
 @login_required
@@ -187,15 +283,12 @@ def order_detail(OID):
     return render_template("order_detail.html", info = info)   
 
 
-#全局变量用来存储用户的sql语句和数据
-buyer_sql = ""
-buyer_data = {}
-price = 0
+
 # 数据集detail界面
-@app.route("/detail/<DID>/",methods=["POST","GET"])
+@app.route("/detail/<DID>/",methods=["GET"])
 @login_required
 def detail(DID):
-    global buyer_sql,buyer_data, price
+
     # 基本信息获取
     user_info = dataset.select('select * from User where Name = \'%s\'' %current_user.get_id(),'transaction')
     Role = user_info[0]["Role"]
@@ -214,59 +307,6 @@ def detail(DID):
     for i in range(7):
         del data[i]["id0"]
 
-    # POST
-    if  request.method == "POST":
-        if request.form.get('checkprice') == 'Check price':
-            price = 0
-            buyer_sql = request.form["SQL query"]
-            try:
-                buyer_data = dataset.select(buyer_sql,owner)
-            except:
-                buyer_sql = ""
-                flash("illegal SQL query!")
-            else:
-                price=getSQLPrice()
-                
-        if request.form.get('takeorder') == 'Take order' and buyer_sql != "":
-            # print(buyer_data)
-            DName = dname
-            Seller = owner
-            Buyer = current_user.get_id()
-            Create_Date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            Base_Price = info[0]['BasePrice']
-            ############################
-            ###########此处待修改########
-            Sale_data_num = len(buyer_data)
-            Access_data_num = len(buyer_data)
-            ############################
-            ############################
-            Price_coefficient = info[0]['Pricecoefficient']
-            Sensitivity = info[0]['Sensitivity']
-            Total_completeness = dataset.cal_complete(buyer_data)
-            Price_strategy = info[0]['PriceStrategy']
-            Price = price
-            SQLquery = buyer_sql
-            insert_sql = '''insert into order_table(DName, Seller, Buyer, CreateDate, BasePrice, SaleDataNum,
-            AccessDataNum, Pricecoefficient, Sensitivity, TotalCompleteness, PriceStrategy, Price, SQLquery) 
-            value(\'%s\',\'%s\',\'%s\',\'%s\', %.3f, %d , %d , %.3f, %.3f, %d, \'%s\', %.3f,\'%s\')'''%(DName, Seller, Buyer, Create_Date, Base_Price, Sale_data_num,
-            Access_data_num, Price_coefficient, Sensitivity, Total_completeness, Price_strategy, Price, SQLquery)
-            dataset.edit(insert_sql, "transaction")
-
-            # 增加售卖次数
-            update_sql = "UPDATE Dataset SET SaleNum = \'%s\' WHERE DID = %s "%(info[0]["SaleNum"] + 1,DID)
-            dataset.edit(update_sql, "transaction")
-            # 重新获取数据
-            sql = "SELECT * FROM Dataset WHERE DID = %s"%DID
-            info = dataset.select(sql,"transaction")
-            # 重置data
-            buyer_sql = ""
-            buyer_data = {}
-            price = 0
-        return render_template("detail.html", data=data, keyword=keyword, info = info, price = price, DID=DID, Role = Role) 
-    # GET
-    buyer_sql = ""
-    buyer_data = {}
-    price = 0
     return render_template("detail.html", data=data, keyword=keyword, info = info, price = price, DID=DID, Role = Role)   
 
 # 卖家查看自己上传的数据集
@@ -344,20 +384,24 @@ def edit_dataset(DID):
                 newstate = 1
             sql = "UPDATE Dataset SET State = \'%s\' WHERE DID = %s "%(newstate,DID)
         elif  request.form.get('editstrategy') == 'Change':
-            newpricestrategy = request.form["newstrategy"]
-            if newpricestrategy =="":
-                return render_template("edit_dataset.html", Role=Role,keyword=keyword, info = info, DID=DID)
-            sql = "UPDATE Dataset SET PriceStrategy = \'%s\' WHERE DID = %s "%(newpricestrategy,DID)
+            oldpricestrategy = info[0]["PriceStrategy"]
+            # if newpricestrategy =="":
+            #     return render_template("edit_dataset.html", Role=Role,keyword=keyword, info = info, DID=DID)
+            if oldpricestrategy == "UCA":
+                newpricestrategy = "QUCA"
+            else:
+                newpricestrategy = "UCA"
+            sql = "UPDATE Dataset SET PriceStrategy = \'%s\' where Owner = \'%s\'"%(newpricestrategy,info[0]["Owner"])
         elif  request.form.get('editpricecoefficient') == 'Change':
             newpricecoefficient = request.form["newpricecoefficient"]
             if newpricecoefficient =="":
                 return render_template("edit_dataset.html", Role=Role,keyword=keyword, info = info, DID=DID)
-            sql = "UPDATE Dataset SET Pricecoefficient = \'%s\' WHERE DID = %s "%(newpricecoefficient,DID)
+            sql = "UPDATE Dataset SET Pricecoefficient= \'%s\' where Owner = \'%s\'"%(newpricecoefficient,info[0]["Owner"])
         elif  request.form.get('editsensitivity') == 'Change':
             newsensitivity = request.form["newsensitivity"]
             if newsensitivity =="":
                 return render_template("edit_dataset.html", Role=Role,keyword=keyword, info = info, DID=DID)
-            sql = "UPDATE Dataset SET Sensitivity = \'%s\' WHERE DID = %s "%(newsensitivity,DID)
+            sql = "UPDATE Dataset SET Sensitivity= \'%s\' where Owner = \'%s\'"%(newsensitivity,info[0]["Owner"])
         
         dataset.edit(sql,"transaction") 
         info = dataset.select("SELECT * FROM Dataset WHERE DID = %s"%DID,"transaction")
@@ -398,4 +442,5 @@ def order_management():
     return render_template("order_management.html", Role = Role, all_data = all_data)
 
 if __name__ == "__main__":
+    flask_excel.init_excel(app)
     app.run()

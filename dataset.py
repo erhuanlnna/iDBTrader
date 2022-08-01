@@ -82,8 +82,11 @@ def cal_complete(data):
                 break
     return orig_len
 
+
+
+
 # 将“\upload”中的filename.csv导入dataset这个数据库里建一个新表
-def write_data(filename,owner,dname):
+def write_data(owner,dname):
     global host, port, user, pwd, charset
 
     # 首先创造一个owner命名的database
@@ -106,7 +109,9 @@ def write_data(filename,owner,dname):
     conn = pymysql.connect(host=host, port=port,user=user,passwd=pwd,charset=charset, db=owner)
     cursor = conn.cursor(cursor=pymysql.cursors.DictCursor)
     #获取数据框的标题行（即字段名称）,将来作为sql语句中的字段名称。
-    f = read_csv(filename,owner)
+    f = read_csv(dname,owner)
+    rows_null = f.isnull().sum(axis=1) 
+    f['empty_num'] = rows_null 
     columns = f.columns.tolist()
     # print(columns)
     
@@ -166,3 +171,4 @@ def write_data(filename,owner,dname):
 
     # 返回写入数据个数
     return int(f.shape[0])
+

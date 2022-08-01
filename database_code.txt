@@ -39,7 +39,7 @@ DName varchar(32) not null,
 Seller varchar(16) not null,
 Buyer varchar(16) not null,
 CreateDate datetime not null,
-BasePrice decimal(10,3) not null,
+UCAPrice decimal(10,3) not null,
 SaleDataNum int not null,
 AccessDataNum int not null,
 Pricecoefficient decimal(6,3) not null,
@@ -47,15 +47,17 @@ Sensitivity decimal(6,3) not null,
 TotalCompleteness int not null,
 PriceStrategy varchar(16) not null,
 Price decimal(10,3) not null,
-SQLquery varchar(128)
+SQLquery varchar(128),
+QueryQuality float
 );
 
 
 
 //初始注册一个Role是Admin的用户
-insert into User(Name,Password,Role) value("root","root123","Admin");
+insert into User(Name,Password,Role) value("root","123","Admin");
 //其他用户的注册通过网站前端来注册
 
 //seller上传的数据传输到dataset数据库里，新建一个dataset数据库
+drop database if exists dataset;
 create database dataset;
 

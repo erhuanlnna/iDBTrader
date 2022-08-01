@@ -130,7 +130,6 @@
                 <th>Order date</th>
                 <th>SQL query</th>
                 <th>Sale data num</th>
-                <th>Base Price</th>
                 <th>Price</th>
             </tr>
             {%for data in all_data%}
@@ -141,7 +140,6 @@
                 <td>{{data["CreateDate"]}}</td>
                 <td>{{data["SQLquery"]}}</td>
                 <td>{{data["SaleDataNum"]}}</td>
-                <td>{{data["BasePrice"]}}</td>
                 <td>{{data["Price"]}}</td>
             </tr>
             {%endfor%}

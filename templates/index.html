@@ -86,7 +86,7 @@
         </div>
 
 
-    </form>
+    
 
 
     <div class="table">
@@ -115,7 +115,31 @@
             {%endfor%}
         </table>
     </div>
+    {%if Role == "Buyer"%}
+        <div class="inner">
+                <div class="form-group">
+                    <label>Seller name</label>
+                    <input type="text" class="form-control" name="Seller name"
+                           placeholder="Please select seller">
+                </div>
+                <div class="form-group">
+                    <label>SQL query</label>
+                    <input type="text" class="form-control" name="SQL query"
+                           placeholder="Please input the SQL query">
+                </div>
+                <button type="submit" class="btn btn-default" type="submit" value="Check price" name="checkprice">Check
+                    price
+                </button>
 
+                <div class="font">
+                    Query price:{{price}}
+                    <button type="submit" class="btn btn-default" type="submit" value="Take order" name="takeorder">Take
+                    order
+                </button>
+                </div>   
+        </div>
+    {%endif%}
+    </form>
     <div class="inner">
         <h4>Edit your password</h4>
         <a href="/edit_pwd">Click here to edit your password</a>
