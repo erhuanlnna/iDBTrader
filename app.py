@@ -396,12 +396,14 @@ def edit_dataset(DID):
             newpricecoefficient = request.form["newpricecoefficient"]
             if newpricecoefficient =="":
                 return render_template("edit_dataset.html", Role=Role,keyword=keyword, info = info, DID=DID)
-            sql = "UPDATE Dataset SET Pricecoefficient= \'%s\' where Owner = \'%s\'"%(newpricecoefficient,info[0]["Owner"])
+            # sql = "UPDATE Dataset SET Pricecoefficient= \'%s\' where Owner = \'%s\'"%(newpricecoefficient,info[0]["Owner"])
+            sql = "UPDATE Dataset SET Pricecoefficient= \'%s\' "%newpricecoefficient
         elif  request.form.get('editsensitivity') == 'Change':
             newsensitivity = request.form["newsensitivity"]
             if newsensitivity =="":
                 return render_template("edit_dataset.html", Role=Role,keyword=keyword, info = info, DID=DID)
-            sql = "UPDATE Dataset SET Sensitivity= \'%s\' where Owner = \'%s\'"%(newsensitivity,info[0]["Owner"])
+            # sql = "UPDATE Dataset SET Sensitivity= \'%s\' where Owner = \'%s\'"%(newsensitivity,info[0]["Owner"])
+            sql = "UPDATE Dataset SET Sensitivity= \'%s\' "%newsensitivity
         
         dataset.edit(sql,"transaction") 
         info = dataset.select("SELECT * FROM Dataset WHERE DID = %s"%DID,"transaction")
