@@ -10,7 +10,9 @@ create table User(
 UID int not null auto_increment primary key,
 Name varchar(16) not null,
 Password varchar(64) not null,
-Role char(6) not null
+Role char(6) not null,
+Pricecoefficient decimal(6,3),
+Sensitivity decimal(6,3)
 );
 
 //在transaction数据库里面建立Dataset表
@@ -26,9 +28,7 @@ CreateDate datetime not null,
 SaleNum int not null,
 State tinyint not null,
 PriceStrategy varchar(16) not null,
-BasePrice decimal(10,3) not null,
-Pricecoefficient decimal(6,3) not null,
-Sensitivity decimal(6,3) not null
+BasePrice decimal(10,3) not null
 );
 
 //在transaction数据库里面建立Order表
@@ -44,7 +44,7 @@ SaleDataNum int not null,
 AccessDataNum int not null,
 Pricecoefficient decimal(6,3) not null,
 Sensitivity decimal(6,3) not null,
-TotalCompleteness int not null,
+TotalCompleteness decimal(6,3) not null,
 PriceStrategy varchar(16) not null,
 Price decimal(10,3) not null,
 SQLquery varchar(128),

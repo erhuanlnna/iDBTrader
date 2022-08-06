@@ -6,9 +6,18 @@ import math
 import os
 import numpy as np
 import pandas as pd
-from django import db
-from matplotlib.pyplot import table
+
 import dataset as da
+
+#########  Interface ############
+# Description: 分割sql语句
+# Input：sql_statement: 想要分割的sql语句
+# Return:   table_list: 查询的表
+#           split_point: 用来区分 attribute 和id0的index的值
+#           projection_flag: 0表示不是projection查询， 1表示是projection查询
+#           new_sql_statement: 更改后的sql语句
+#           projections_attributes: attributes的list
+#################################
 def parse_sql_statements(sql_statement : str):
     rule_projections = r'select(.*?)from'
     projection_flag = 0
@@ -158,20 +167,25 @@ def get_attributes_list(projections_attributes, table_list, db):
         iter_num += 1
     return ans_list
 
-def check_price(buyer_sql, owner):
-    para=da.select("SELECT PriceStrategy, Pricecoefficient, Sensitivity From Dataset where Owner = \'%s\'"% owner, 'transaction')
-    coefficient = float(para[0]['Pricecoefficient'])
-    sensitivity = float(para[0]['Sensitivity'])
+def check_price(buyer_sql, owner, buyer):
+    para=da.select("SELECT PriceStrategy From Dataset where Owner = \'%s\'"% owner, 'transaction')
     strategy = para[0]['PriceStrategy']
+    para2=da.select("SELECT Pricecoefficient,Sensitivity From User where Name = \'%s\'"% buyer, 'transaction')
+    coefficient = float(para2[0]['Pricecoefficient'])
+    sensitivity = float(para2[0]['Sensitivity'])
     no_duplicate_lineage_set,result, whole_results, projections_attributes, table_list= get_lineage(buyer_sql, owner)
     attributes_list = get_attributes_list(projections_attributes, table_list, owner)
+    
     # if strategy == "UCA":
     #     return cal_uca_price(no_duplicate_lineage_set, table_list, owner)
     # if strategy == "QUCA":
+
+    # 是取UCA还是QUCA会在take order的时候由app.py文件来决定，这边返回所有变量
     return list(cal_quca_price(no_duplicate_lineage_set, table_list, attributes_list, sensitivity, coefficient, len(whole_results), owner)) + [coefficient, sensitivity, strategy]
 
 if __name__ == "__main__":
-    buyer_sql = "select price, cartel from data4 where  0.2 < price  < 0.35 "
+    #一些测试
+    buyer_sql = "select gender from test where  id < 20 "
     # table_list = parse_sql_statements(buyer_sql)[0]
     # no_duplicate_lineage_set,result, whole_results= get_lineage(buyer_sql, 'yrq')
     # print(cal_uca_price(no_duplicate_lineage_set, table_list, 'yrq'))
@@ -184,4 +198,4 @@ if __name__ == "__main__":
     # print(len(whole_results),len(no_duplicate_lineage_set))
     # print(check_price(buyer_sql,'yrq')) ## 返回9个值，1-4为UCA，5-6为QUCA，7-9为系数
     # a,b,c =[1,2,3]
-    print(check_price("select distinct gender from Data1 where children = 'no'",'yrq'))
+    print(check_price(buyer_sql,'yrq'))

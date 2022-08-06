@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Show all user</title>
+</head>
+<body>
+
+            <table >
+                <tr>
+                    <th>User name</th>
+                    <th>Price coefficient</th>
+                    <th>Sensitivity</th>
+                    <th>Operation</th>
+                </tr>
+                {%for data in user_info%}
+                <tr>
+                    <td>{{data["Name"]}}</td>
+                    <td>{{data["Pricecoefficient"]}}</td>
+                    <td>{{data["Sensitivity"]}}</td>
+                    <td><a href="/edit_price_parameter/{{data["Name"]}}/">Edit</a></td>
+                </tr>
+                {%endfor%}
+            </table>
+<div>
+    <a href="/">Go back to homepage</a>
+</div>
+</body> 
+</html>

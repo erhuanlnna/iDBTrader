@@ -8,8 +8,7 @@ import flask_excel
 import SQL
 
 # 定义price_coefficient 和 sensitivity的默认值, admin可以对其进行修改。
-PRICE_COEFFICIENT = 1
-SENSITIVITY = 0.5
+
 PRICE_STRATEGY = 'UCA'
 
 #建立一个flask实例
@@ -118,7 +117,7 @@ def index():
                 if buyer_data == ():
                     flash("Empty set!")
                     return redirect(url_for("index"))
-                uca_price, certain_lineage_num, total_completeness, base_price_list, query_quality, quca_price, coefficient, sensitivity, strategy = SQL.check_price(buyer_sql, owner)
+                uca_price, certain_lineage_num, total_completeness, base_price_list, query_quality, quca_price, coefficient, sensitivity, strategy = SQL.check_price(buyer_sql, owner,current_user.get_id())
             except:
                 buyer_sql = ""
                 flash("illegal SQL query!")
@@ -143,10 +142,13 @@ def index():
             Price_strategy = strategy
             Price = price
             SQLquery = buyer_sql
-            insert_sql = '''insert into order_table(DName, Seller, Buyer, CreateDate, UCAPrice, SaleDataNum,
+            # insert_sql = '''insert into order_table(DName, Seller, Buyer, CreateDate, UCAPrice, SaleDataNum,
+            # AccessDataNum, Pricecoefficient, Sensitivity, TotalCompleteness, PriceStrategy, Price, SQLquery) 
+            # value(\'%s\',\'%s\',\'%s\',\'%s\', %.3f, %d , %d , %.3f, %.3f, %.3f, \'%s\', %.3f,\'%s\')'''%(DName, Seller, Buyer, Create_Date, UCAPrice, Sale_data_num,
+            # Access_data_num, Price_coefficient, Sensitivity, Total_completeness, Price_strategy, Price, SQLquery)
+            insert_sql = f'''insert into order_table(DName, Seller, Buyer, CreateDate, UCAPrice, SaleDataNum,
             AccessDataNum, Pricecoefficient, Sensitivity, TotalCompleteness, PriceStrategy, Price, SQLquery) 
-            value(\'%s\',\'%s\',\'%s\',\'%s\', %.3f, %d , %d , %.3f, %.3f, %.3f, \'%s\', %.3f,\'%s\')'''%(DName, Seller, Buyer, Create_Date, UCAPrice, Sale_data_num,
-            Access_data_num, Price_coefficient, Sensitivity, Total_completeness, Price_strategy, Price, SQLquery)
+            value(\'{DName}\',\'{Seller}\',\'{Buyer}\',\'{Create_Date}\', {UCAPrice}, {Sale_data_num} , {Access_data_num} , {Price_coefficient}, {Sensitivity}, {Total_completeness}, \'{Price_strategy}\', {Price},\'{SQLquery}\')'''
             dataset.edit(insert_sql, "transaction")
 
             # 增加售卖次数
@@ -191,7 +193,10 @@ def upload():
     if  request.method == "POST":
         create_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         owner = current_user.get_id()
-        dname=request.form["name"]
+        dname= request.form["name"]
+        if dname.isdigit():
+            flash("Name cannot be made up of only numbers!")
+            return redirect(url_for('upload'))
         field=request.form["field"]
         base_price= request.form["base price"]
         if request.form["base price"] != "":
@@ -211,25 +216,24 @@ def upload():
         file.save(os.path.dirname(__file__)+'/upload/' + '/%s/'%owner + dname + ".csv")  # 保存文件
         #将数据写入用户对应的database里
         size = dataset.write_data(owner,dname)
-        para=dataset.select("SELECT PriceStrategy, Pricecoefficient, Sensitivity From Dataset where Owner = \'%s\'"% owner, 'transaction')
+        para=dataset.select("SELECT PriceStrategy From Dataset where Owner = \'%s\'"% owner, 'transaction')
         if para == ():
-            coeff = PRICE_COEFFICIENT
-            sen = SENSITIVITY
+            # coeff = PRICE_COEFFICIENT
+            # sen = SENSITIVITY
             price_strategy= PRICE_STRATEGY
         else:
-            coeff = para[0]['Pricecoefficient']
-            sen = para[0]['Sensitivity']
+            # coeff = para[0]['Pricecoefficient']
+            # sen = para[0]['Sensitivity']
             price_strategy= para[0]['PriceStrategy']
         # 将数据描述信息存入dataset表里
         insert_sql = '''insert into Dataset(Name, Owner, Field, Size, Keywords, CreateDate, SaleNum,
-        State, PriceStrategy, BasePrice, Pricecoefficient, Sensitivity) 
-        value(\'%s\',\'%s\',\'%s\',%d, \'%s\',\'%s\', 0 , 1, \'%s\', %.3f,  %.3f, %.3f)'''%(dname,owner,field,size,keyword,create_date,price_strategy,base_price,coeff,sen)
+        State, PriceStrategy, BasePrice) 
+        value(\'%s\',\'%s\',\'%s\',%d, \'%s\',\'%s\', 0 , 1, \'%s\', %.3f)'''%(dname,owner,field,size,keyword,create_date,price_strategy,base_price)
         insert_db = "transaction"
 
         dataset.edit(insert_sql, insert_db)
         # # 将数据存入User表里
-        # insert_sql = '''UPDATE User SET Pricecoefficient = %.3f, Sensitivity = %.3f, PriceStrategy =\'%s\'
-        # where Name = \'%s\''''%(PRICE_COEFFICIENT,SENSITIVITY, PRICE_STRATEGY, owner)
+        # insert_sql = '''UPDATE User SET Pricecoefficient = %.3f, Sensitivity = %.3f where Name = \'%s\''''%(PRICE_STRATEGY, owner)
         # dataset.edit(insert_sql, insert_db)
 
         flash("Upload successfully!")
@@ -392,18 +396,18 @@ def edit_dataset(DID):
             else:
                 newpricestrategy = "UCA"
             sql = "UPDATE Dataset SET PriceStrategy = \'%s\' where Owner = \'%s\'"%(newpricestrategy,info[0]["Owner"])
-        elif  request.form.get('editpricecoefficient') == 'Change':
-            newpricecoefficient = request.form["newpricecoefficient"]
-            if newpricecoefficient =="":
-                return render_template("edit_dataset.html", Role=Role,keyword=keyword, info = info, DID=DID)
-            # sql = "UPDATE Dataset SET Pricecoefficient= \'%s\' where Owner = \'%s\'"%(newpricecoefficient,info[0]["Owner"])
-            sql = "UPDATE Dataset SET Pricecoefficient= \'%s\' "%newpricecoefficient
-        elif  request.form.get('editsensitivity') == 'Change':
-            newsensitivity = request.form["newsensitivity"]
-            if newsensitivity =="":
-                return render_template("edit_dataset.html", Role=Role,keyword=keyword, info = info, DID=DID)
-            # sql = "UPDATE Dataset SET Sensitivity= \'%s\' where Owner = \'%s\'"%(newsensitivity,info[0]["Owner"])
-            sql = "UPDATE Dataset SET Sensitivity= \'%s\' "%newsensitivity
+        # elif  request.form.get('editpricecoefficient') == 'Change':
+        #     newpricecoefficient = request.form["newpricecoefficient"]
+        #     if newpricecoefficient =="":
+        #         return render_template("edit_dataset.html", Role=Role,keyword=keyword, info = info, DID=DID)
+        #     # sql = "UPDATE Dataset SET Pricecoefficient= \'%s\' where Owner = \'%s\'"%(newpricecoefficient,info[0]["Owner"])
+        #     sql = "UPDATE Dataset SET Pricecoefficient= \'%s\' "%newpricecoefficient
+        # elif  request.form.get('editsensitivity') == 'Change':
+        #     newsensitivity = request.form["newsensitivity"]
+        #     if newsensitivity =="":
+        #         return render_template("edit_dataset.html", Role=Role,keyword=keyword, info = info, DID=DID)
+        #     # sql = "UPDATE Dataset SET Sensitivity= \'%s\' where Owner = \'%s\'"%(newsensitivity,info[0]["Owner"])
+        #     sql = "UPDATE Dataset SET Sensitivity= \'%s\' "%newsensitivity
         
         dataset.edit(sql,"transaction") 
         info = dataset.select("SELECT * FROM Dataset WHERE DID = %s"%DID,"transaction")
@@ -442,6 +446,37 @@ def order_management():
     else:
         all_data = searchOrderOfBuyer(current_user.get_id())
     return render_template("order_management.html", Role = Role, all_data = all_data)
+
+# 查看全部买家
+@app.route("/show_user",methods=["POST","GET"])
+@login_required
+def show_user():
+    user_info = dataset.select("select Name, Pricecoefficient,Sensitivity from User where Role = 'Buyer'",'transaction')
+    return render_template("show_user.html",user_info = user_info)
+
+# 管理pricecoeff和sensitivity
+@app.route("/edit_price_parameter/<User>/",methods=["POST","GET"])
+@login_required
+def edit_price_parameter(User):
+    # # 将数据存入User表里
+    user_info = dataset.select(f"select Name,Pricecoefficient,Sensitivity from User where Name = \'{User}\'",'transaction')
+    if  request.method == "POST":
+        sql = ""
+        if  request.form.get('editcoeff') == 'Change':
+            newpricecoefficient = request.form["newpricecoefficient"]
+            if newpricecoefficient =="":
+                return render_template("edit_price_parameter.html", user_info = user_info)
+            sql = f"UPDATE User SET Pricecoefficient= \'{newpricecoefficient}\' where Name = \'{User}\'"
+        elif  request.form.get('editsensitivity') == 'Change':
+            newsensitivity = request.form["newsensitivity"]
+            if newsensitivity =="":
+                return render_template("edit_price_parameter.html", user_info = user_info)
+            sql = f"UPDATE User SET Sensitivity= \'{newsensitivity}\' where Name = \'{User}\'"
+        dataset.edit(sql,"transaction") 
+    
+    # Get
+    user_info = dataset.select(f"select Name,Pricecoefficient,Sensitivity from User where Name = \'{User}\'",'transaction')
+    return render_template("edit_price_parameter.html", user_info = user_info)
 
 if __name__ == "__main__":
     flask_excel.init_excel(app)

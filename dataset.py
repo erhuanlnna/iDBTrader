@@ -9,6 +9,8 @@ user='root'
 pwd=''
 charset='utf8'
 database='transaction'
+PRICE_COEFFICIENT = 1
+SENSITIVITY = 0.5
 
 def register(Name, Password, Role):
     global host, port, user, pwd, charset, database
@@ -17,8 +19,12 @@ def register(Name, Password, Role):
     cursor = conn.cursor(cursor=pymysql.cursors.DictCursor)
 
     # add data
-    sql = "insert into User(Name,Password,Role) value(%s,%s,%s)"
-    cursor.execute(sql,[Name, Password, Role])
+    if Role == "Buyer":
+        sql = "insert into User(Name,Password,Role,Pricecoefficient,Sensitivity) value(%s,%s,%s,%s,%s)"
+        cursor.execute(sql,[Name, Password, Role, PRICE_COEFFICIENT, SENSITIVITY])
+    else:
+        sql = "insert into User(Name,Password,Role) value(%s,%s,%s)"
+        cursor.execute(sql,[Name, Password, Role])
     conn.commit()
 
     # close mysql

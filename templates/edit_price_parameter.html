@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Price parameter</title>
+</head>
+<body>
+<div >
+<form method="post" action="/edit_price_parameter/{{user_info[0]["Name"]}}/">
+    <div>Price coefficient</div>
+    <div>{{user_info[0]["Pricecoefficient"]}}</div>
+
+    <input type="text"  placeholder="New price coefficient" name="newpricecoefficient">
+    <button type="submit"  value="Change" name="editcoeff">Change</button>
+
+    <div>Sensitivity</div>
+    <div>{{user_info[0]["Sensitivity"]}}</div>
+
+    <input type="text"  placeholder="New sensitivity" name="newsensitivity">
+    <button type="submit"  value="Change" name="editsensitivity">Change</button>
+</form>
+<div>
+    <a href="/show_user">Go back to show all buyers</a>
+</div>
+</div>
+</body> 
+</html>
