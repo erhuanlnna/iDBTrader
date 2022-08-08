@@ -211,6 +211,8 @@ def upload():
         if suffix != ".csv":
             flash("Wrong data type(only .csv files are accepted)!")
             return redirect(url_for('upload')) 
+        if not os.path.exists(os.path.dirname(__file__)+'/upload'):
+            os.makedirs(os.path.dirname(__file__)+'/upload')
         if not os.path.exists(os.path.dirname(__file__)+'/upload/' + '/%s/'%owner):
             os.makedirs(os.path.dirname(__file__)+'/upload/' + '/%s/'%owner)
         file.save(os.path.dirname(__file__)+'/upload/' + '/%s/'%owner + dname + ".csv")  # 保存文件
