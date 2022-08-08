@@ -43,15 +43,22 @@
             height:100px;
             //border: 1px solid black;
             float:left;
+            background-color: rgba(255,255,255,0.3);
 
             padding:10px 10px;
-            font-size:15px;
+            font-size:18px;
+        }
+        .logo img{
+        width:400px;
         }
 
     </style>
 </head>
 <body>
 <div class="outer_box">
+    <div class="logo">
+        <img src="https://i.ibb.co/p0vctG3/logo.png"/>
+    </div>
     <div class="account">
         <h1>Edit Price Parameter</h1>
         <form method="post" action="/edit_price_parameter/{{user_info[0]["Name"]}}/">

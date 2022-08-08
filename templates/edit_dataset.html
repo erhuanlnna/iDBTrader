@@ -20,9 +20,13 @@
         }
 
         .account{
-            width: 1210px;
-            border: 1px solid #dddddd;
+            width: 1060px;
+            //border: 1px solid #dddddd;
             height: 900px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
 
 
             margin-left: auto;
@@ -34,15 +38,20 @@
             text-align: center;
         }
         .inner{
-            width: 400px;
+            width: 350px;
             //border: 1px solid #dddddd;
             height: 50px;
             float:left;
             font-size:20px;
+            background-color: rgba(255,255,255,0.5);
 
             padding: 10px;
         }
         .B-color{color:blue;}
+
+        .logo img{
+        width:400px;
+        }
 
 
 
@@ -54,15 +63,16 @@
 </head>
 <body>
 <div class="outer_box">
+    <div class="logo">
+        <img src="https://i.ibb.co/p0vctG3/logo.png"/>
+    </div>
     <div class="account">
         <h1>Dataset Details</h1>
         {%if Role == "Seller"%}
         <form method="post" action="/edit_dataset/{{DID}}/" class="form-inline">
 
 
-            <div class="inner"></div>
-            <div class="inner"></div>
-            <div class="inner"></div>
+
             <div class="inner">
                 <div>Dataset name</div>
             </div>
@@ -177,7 +187,7 @@
                 <div>State</div>
             </div>
             <div class="inner">
-                <div style="color:white;">
+                <div class="B-color">
                     {%if info[0]["State"] == 1%}
                     On sale
                     {%endif%}
@@ -310,7 +320,7 @@
                 <div>State</div>
             </div>
             <div class="inner">
-                <div style="color:white;">
+                <div class="B-color">
                     {%if info[0]["State"] == 1%}
                     On sale
                     {%endif%}
@@ -333,7 +343,7 @@
             <div class="inner"></div>
 
             {%endif%}
-            <div class="inner">
+            <div class="inner" style="background-color: rgba(255,255,255,0);">
                 <a href="/manage_dataset">Go back to browse dataset</a>
             </div>
         </form>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="091ec962-c8ef-4632-9e23-367988a2c819" name="变更" comment="">
+      <change beforePath="$PROJECT_DIR$/dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/dataset.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/edit_dataset.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/edit_dataset.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/edit_price_parameter.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/edit_price_parameter.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/edit_pwd.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/edit_pwd.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/manage_dataset.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/manage_dataset.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/order_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/order_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/order_management.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/order_management.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/register.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/show_user.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/show_user.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/upload.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/upload.html" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2Cy3dkUM5Dzu2XXzmRVRaY1eI9L" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/26213/Desktop/暑研/2022-Summer-Research&quot;
+  }
+}</component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="091ec962-c8ef-4632-9e23-367988a2c819" name="变更" comment="" />
+      <created>1659761086769</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1659761086769</updated>
+    </task>
+    <servers />
+  </component>
+</project>
