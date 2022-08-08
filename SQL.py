@@ -44,6 +44,21 @@ def parse_sql_statements(sql_statement : str):
     str_list = list(new_sql_statement)
     str_list.insert(location, ', '+', '.join(table_id) )
     new_sql_statement = ''.join(str_list)
+
+    # 8月8日修改后新增：对 projections_attributes进行更改，添加where后面的属性
+    if 'where' in sql_statement:
+        search_attributes = re.findall(r'(?<=where).*$', sql_statement) #取where后面的字符串
+        search_attributes = search_attributes[0].replace(' ','').split('and')   #以and分割
+        for each_equ in search_attributes:
+            if '>' in each_equ:
+                equ_list = each_equ.split('>')
+            elif '<' in each_equ:
+                equ_list = each_equ.split('<')
+            elif '=' in each_equ:
+                equ_list = each_equ.split('=')
+            for attr in equ_list:
+                projections_attributes.append(attr) #不是attribute的会在get_attribute_list这个函数里被剔除，所以在这边可以全部append进去
+
     return table_list,split_point,projection_flag, new_sql_statement, projections_attributes
 
 def lineage_on_selections_and_joins(new_sql_statement : str, db, split_point, attr, table_list):
@@ -98,21 +113,31 @@ def cal_uca_price(no_duplicate_lineage_set : list, table_list:list, db):
     total_completeness = 0
     base_price_list = []
     for i in range(len(table_list)):
-        sum = 0
+        empty_sum = 0
+        no_duplicate_lineage_set_this_table = set()
+        complteness_this_table = 0
         base_price = da.select("select BasePrice from Dataset where Name = '%s'"%table_list[i], 'transaction')
         base_price = float(base_price[0]["BasePrice"])
+        # print(base_price)
         base_price_list.append(base_price)
         # -2是因为减去id0和empty_num这两个原来不存在在数据里的值
         attribute_num = da.select("SELECT COUNT(*) FROM information_schema. COLUMNS WHERE table_schema = '%s' AND table_name = '%s'"%(db,table_list[i]),db)
         attribute_num = attribute_num[0]['COUNT(*)'] - 2
         for j in range(len(no_duplicate_lineage_set)):
-            empty_field_num = da.select("SELECT empty_num from %s where id0 = %d"%(table_list[i], no_duplicate_lineage_set[j][i]) ,db)
-            sum += empty_field_num[0]['empty_num']
-        attribute_num *= len(no_duplicate_lineage_set)
-        total_completeness += 1 - sum / attribute_num
-        price += base_price * total_completeness * len(no_duplicate_lineage_set)
-        certain_lineage_num += len(no_duplicate_lineage_set)
+            if(no_duplicate_lineage_set[j][i] not in no_duplicate_lineage_set_this_table):
+                empty_field_num = da.select("SELECT empty_num from %s where id0 = %d"%(table_list[i], no_duplicate_lineage_set[j][i]) ,db)
+                # sum改成empty_sum，因为sum是python自带的关键字
+                empty_sum += empty_field_num[0]['empty_num']
+                no_duplicate_lineage_set_this_table.add(no_duplicate_lineage_set[j][i])
+            else:
+                continue
+        attribute_num *= len(no_duplicate_lineage_set_this_table) # 使用不重复的lineage个数
+        complteness_this_table = 1 - empty_sum / attribute_num
+        total_completeness += complteness_this_table
+        price += base_price * total_completeness * len(no_duplicate_lineage_set_this_table) # 使用不重复的lineage个数
+        certain_lineage_num += len(no_duplicate_lineage_set_this_table) # 使用不重复的lineage个数
 
+    total_completeness = total_completeness/len(table_list)
     return  round(price,3), certain_lineage_num, round(total_completeness,3), base_price_list
 
 def cal_quca_price(no_duplicate_lineage_set : list, table_list:list, attributes_list, sensitivity: float, price_coefficient: float, result_num: int, db): 
@@ -185,7 +210,7 @@ def check_price(buyer_sql, owner, buyer):
 
 if __name__ == "__main__":
     #一些测试
-    buyer_sql = "select gender from test where  id < 20 "
+    buyer_sql = "select education, cites from Data1,Data2 where Data1.id = Data2.id  "
     # table_list = parse_sql_statements(buyer_sql)[0]
     # no_duplicate_lineage_set,result, whole_results= get_lineage(buyer_sql, 'yrq')
     # print(cal_uca_price(no_duplicate_lineage_set, table_list, 'yrq'))
@@ -198,4 +223,4 @@ if __name__ == "__main__":
     # print(len(whole_results),len(no_duplicate_lineage_set))
     # print(check_price(buyer_sql,'yrq')) ## 返回9个值，1-4为UCA，5-6为QUCA，7-9为系数
     # a,b,c =[1,2,3]
-    print(check_price(buyer_sql,'yrq'))
+    print(check_price(buyer_sql,'yrq','lby'))

@@ -57,7 +57,3 @@ QueryQuality float
 insert into User(Name,Password,Role) value("root","123","Admin");
 //其他用户的注册通过网站前端来注册
 
-//seller上传的数据传输到dataset数据库里，新建一个dataset数据库
-drop database if exists dataset;
-create database dataset;
-
