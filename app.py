@@ -148,7 +148,7 @@ def index():
             # Access_data_num, Price_coefficient, Sensitivity, Total_completeness, Price_strategy, Price, SQLquery)
             insert_sql = f'''insert into order_table(DName, Seller, Buyer, CreateDate, UCAPrice, SaleDataNum,
             AccessDataNum, Pricecoefficient, Sensitivity, TotalCompleteness, PriceStrategy, Price, SQLquery) 
-            value(\'{DName}\',\'{Seller}\',\'{Buyer}\',\'{Create_Date}\', {UCAPrice}, {Sale_data_num} , {Access_data_num} , {Price_coefficient}, {Sensitivity}, {Total_completeness}, \'{Price_strategy}\', {Price},\'{SQLquery}\')'''
+            value(\'{DName}\',\'{Seller}\',\'{Buyer}\',\'{Create_Date}\', {UCAPrice}, {Sale_data_num} , {Access_data_num} , {Price_coefficient}, {Sensitivity}, {Total_completeness}, \'{Price_strategy}\', {Price},\"{SQLquery}\")'''
             dataset.edit(insert_sql, "transaction")
 
             # 增加售卖次数
