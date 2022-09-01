@@ -50,7 +50,14 @@ def parse_sql_statements(sql_statement : str):
         search_attributes = re.findall(r'(?<=where).*$', sql_statement) #取where后面的字符串
         search_attributes = search_attributes[0].replace(' ','').split('and')   #以and分割
         for each_equ in search_attributes:
-            if '>' in each_equ:
+            equ_list = []
+            if '>=' in each_equ:
+                equ_list = each_equ.split('>=')
+            elif '<=' in each_equ:
+                equ_list = each_equ.split('<=')
+            elif '<>' in each_equ:
+                equ_list = each_equ.split('<>')
+            elif '>' in each_equ:
                 equ_list = each_equ.split('>')
             elif '<' in each_equ:
                 equ_list = each_equ.split('<')
@@ -210,7 +217,7 @@ def check_price(buyer_sql, owner, buyer):
 
 if __name__ == "__main__":
     #一些测试
-    buyer_sql = "select education, cites from Data1,Data2 where Data1.id = Data2.id  "
+    buyer_sql = "select education from Data1 where education between 15 and 20"
     # table_list = parse_sql_statements(buyer_sql)[0]
     # no_duplicate_lineage_set,result, whole_results= get_lineage(buyer_sql, 'yrq')
     # print(cal_uca_price(no_duplicate_lineage_set, table_list, 'yrq'))
@@ -223,4 +230,6 @@ if __name__ == "__main__":
     # print(len(whole_results),len(no_duplicate_lineage_set))
     # print(check_price(buyer_sql,'yrq')) ## 返回9个值，1-4为UCA，5-6为QUCA，7-9为系数
     # a,b,c =[1,2,3]
+
+    # print(parse_sql_statements(buyer_sql))
     print(check_price(buyer_sql,'yrq','lby'))
