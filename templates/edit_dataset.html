@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dataset Details</title>
+    <title>Dataset details</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
           integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
     <style>
@@ -14,16 +14,18 @@
         //border: 1px solid #dddddd;
         width: 100%;
         height: 100vh;
-        background-image: url('https://images.pexels.com/photos/1532771/pexels-photo-1532771.jpeg?auto=compress&cs=tinysrgb&w=1600');
+        //background-image: url('https://images.pexels.com/photos/1532771/pexels-photo-1532771.jpeg?auto=compress&cs=tinysrgb&w=1600');
 
         background-size: 100% 100%;
         }
 
         .account{
-            width: 1060px;
-            //border: 1px solid #dddddd;
+            width: 960px;
+            border: 1px solid #dddddd;
             height: 900px;
             position: absolute;
+            background-color: rgba(134, 221, 221, 0.219);
+            box-shadow: 0px 0px 3px rgb(76, 219, 219);
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
@@ -39,7 +41,7 @@
         }
         .inner{
             width: 350px;
-            //border: 1px solid #dddddd;
+            border: 1px solid #dddddd;
             height: 50px;
             float:left;
             font-size:20px;
@@ -47,7 +49,18 @@
 
             padding: 10px;
         }
-        .B-color{color:blue;}
+
+        .inner1{
+            width: 250px;
+            border: 1px solid #dddddd;
+            height: 50px;
+            float:left;
+            font-size:20px;
+            background-color: rgba(255,255,255,0.5);
+
+            padding: 10px;
+        }
+        .B-color{color:black;}
 
         .logo img{
         width:400px;
@@ -64,17 +77,18 @@
 <body>
 <div class="outer_box">
     <div class="logo">
-        <img src="https://i.ibb.co/p0vctG3/logo.png"/>
+        <img src="/static/logo.png">
     </div>
     <div class="account">
-        <h1>Dataset Details</h1>
+        <a href="/manage_dataset"><img src="/static/back.png" style="width:50px;float:left;"></a>
+        <h1>Dataset details</h1>
         {%if Role == "Seller"%}
         <form method="post" action="/edit_dataset/{{DID}}/" class="form-inline">
 
 
 
-            <div class="inner">
-                <div>Dataset name</div>
+            <div class="inner1">
+                <label>Dataset name</label>
             </div>
             <div class="inner">
                 <div class="B-color">{{info[0]["Name"]}}</div>
@@ -88,8 +102,8 @@
 
             </div>
 
-            <div class="inner">
-                <div>Seller name</div>
+            <div class="inner1">
+                <label>Seller name</label>
             </div>
             <div class="inner">
                 <div class="B-color">{{info[0]["Owner"]}}</div>
@@ -98,8 +112,8 @@
 
             </div>
 
-            <div class="inner">
-                <div>Field</div>
+            <div class="inner1">
+                <label>Field</label>
             </div>
             <div class="inner">
                 <div class="B-color">{{info[0]["Field"]}}</div>
@@ -113,8 +127,8 @@
 
             </div>
 
-            <div class="inner">
-                <div>Size</div>
+            <div class="inner1">
+                <label>Size</label>
             </div>
             <div class="inner">
                 <div class="B-color">{{info[0]["Size"]}}</div>
@@ -123,8 +137,8 @@
 
             </div>
 
-            <div class="inner">
-                <div>Base price</div>
+            <div class="inner1">
+                <label>Base price</label>
             </div>
             <div class="inner">
                 <div class="B-color">{{info[0]["BasePrice"]}}</div>
@@ -138,8 +152,8 @@
 
             </div>
 
-            <div class="inner">
-                <div>Dataset No.</div>
+            <div class="inner1">
+                <label>Dataset No.</label>
             </div>
             <div class="inner">
                 <div class="B-color">{{info[0]["DID"]}}</div>
@@ -148,8 +162,8 @@
 
             </div>
 
-            <div class="inner">
-                <div>Create date</div>
+            <div class="inner1">
+                <label>Create date</label>
             </div>
             <div class="inner">
                 <div class="B-color">{{info[0]["CreateDate"]}}</div>
@@ -158,8 +172,8 @@
 
             </div>
 
-            <div class="inner">
-                <div>Keyword</div>
+            <div class="inner1">
+                <label>Keyword</label>
             </div>
             <div class="inner">
                 <div class="B-color">{%for i in keyword%}{{i}}&emsp;&emsp;{%endfor%}</div>
@@ -173,8 +187,8 @@
 
             </div>
 
-            <div class="inner">
-                <div>Sale number</div>
+            <div class="inner1">
+                <label>Sale number</label>
             </div>
             <div class="inner">
                 <div class="B-color">{{info[0]["SaleNum"]}}</div>
@@ -183,8 +197,8 @@
 
             </div>
 
-            <div class="inner">
-                <div>State</div>
+            <div class="inner1">
+                <label>State</label>
             </div>
             <div class="inner">
                 <div class="B-color">
@@ -203,8 +217,8 @@
 
             </div>
 
-            <div class="inner">
-                <div>Price strategy</div>
+            <div class="inner1">
+                <label>Price strategy</label>
             </div>
             <div class="inner">
                 <div class="B-color">{{info[0]["PriceStrategy"]}}</div>
@@ -223,11 +237,11 @@
         <form method="post" action="/edit_dataset/{{DID}}/" class="form-inline">
 
 
+            <div class="inner1"></div>
             <div class="inner"></div>
             <div class="inner"></div>
-            <div class="inner"></div>
-            <div class="inner">
-                <div>Dataset name</div>
+            <div class="inner1">
+                <label>Dataset name</label>
             </div>
             <div class="inner">
                 <div class="B-color">{{info[0]["Name"]}}</div>
@@ -236,8 +250,8 @@
 
             </div>
 
-            <div class="inner">
-                <div>Seller name</div>
+            <div class="inner1">
+                <label>Seller name</label>
             </div>
             <div class="inner">
                 <div class="B-color">{{info[0]["Owner"]}}</div>
@@ -246,8 +260,8 @@
 
             </div>
 
-            <div class="inner">
-                <div>Field</div>
+            <div class="inner1">
+                <label>Field</label>
             </div>
             <div class="inner">
                 <div class="B-color">{{info[0]["Field"]}}</div>
@@ -256,8 +270,8 @@
 
             </div>
 
-            <div class="inner">
-                <div>Size</div>
+            <div class="inner1">
+                <label>Size</label>
             </div>
             <div class="inner">
                 <div class="B-color">{{info[0]["Size"]}}</div>
@@ -266,8 +280,8 @@
 
             </div>
 
-            <div class="inner">
-                <div>Base price</div>
+            <div class="inner1">
+                <label>Base price</label>
             </div>
             <div class="inner">
                 <div class="B-color">{{info[0]["BasePrice"]}}</div>
@@ -276,8 +290,8 @@
 
             </div>
 
-            <div class="inner">
-                <div>Dataset No.</div>
+            <div class="inner1">
+                <label>Dataset No.</label>
             </div>
             <div class="inner">
                 <div class="B-color">{{info[0]["DID"]}}</div>
@@ -286,8 +300,8 @@
 
             </div>
 
-            <div class="inner">
-                <div>Create date</div>
+            <div class="inner1">
+                <label>Create date</label>
             </div>
             <div class="inner">
                 <div class="B-color">{{info[0]["CreateDate"]}}</div>
@@ -296,8 +310,8 @@
 
             </div>
 
-            <div class="inner">
-                <div>Keyword</div>
+            <div class="inner1">
+                <label>Keyword</label>
             </div>
             <div class="inner">
                 <div class="B-color">{%for i in keyword%}{{i}}&emsp;&emsp;{%endfor%}</div>
@@ -306,8 +320,8 @@
 
             </div>
 
-            <div class="inner">
-                <div>Sale number</div>
+            <div class="inner1">
+                <label>Sale number</label>
             </div>
             <div class="inner">
                 <div class="B-color">{{info[0]["SaleNum"]}}</div>
@@ -316,8 +330,8 @@
 
             </div>
 
-            <div class="inner">
-                <div>State</div>
+            <div class="inner1">
+                <label>State</label>
             </div>
             <div class="inner">
                 <div class="B-color">
@@ -334,8 +348,8 @@
 
             </div>
 
-            <div class="inner">
-                <div>Price strategy</div>
+            <div class="inner1">
+                <label>Price strategy</label>
             </div>
             <div class="inner">
                 <div class="B-color">{{info[0]["PriceStrategy"]}}</div>
@@ -343,9 +357,7 @@
             <div class="inner"></div>
 
             {%endif%}
-            <div class="inner" style="background-color: rgba(255,255,255,0);">
-                <a href="/manage_dataset">Go back to browse dataset</a>
-            </div>
+
         </form>
     </div>
 </div>

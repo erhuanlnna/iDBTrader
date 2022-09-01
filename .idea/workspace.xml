@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="091ec962-c8ef-4632-9e23-367988a2c819" name="变更" comment="">
-      <change beforePath="$PROJECT_DIR$/dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/dataset.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/logo.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/detail.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/edit_dataset.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/edit_dataset.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/edit_price_parameter.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/edit_price_parameter.html" afterDir="false" />

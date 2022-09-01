@@ -73,26 +73,26 @@
 <body>
 <div class="outer_box">
     <div class="logo">
-        <img src="https://i.ibb.co/p0vctG3/logo.png"/>
+        <img src="/static/logo.png">
     </div>
     <div class="center_form">
-        <p class="title"><span>L&nbsp;O&nbsp;G&nbsp;I&nbsp;N&nbsp;&nbsp;&nbsp;&nbsp;F&nbsp;O&nbsp;R&nbsp;M</span></p>
+        <p class="title"><span style="font-size:20px;">L&nbsp;O&nbsp;G&nbsp;I&nbsp;N&nbsp;&nbsp;&nbsp;&nbsp;F&nbsp;O&nbsp;R&nbsp;M</span></p>
         <div class="box_two">
             {% with messages = get_flashed_messages() %}
             <div style="color: blue">{{ messages[0] }}</div>
             {% endwith %}
             <form action="{{ url_for('login') }}" method="POST">
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Name</label>
+                    <label for="exampleInputEmail1" style="font-size:18px;">Name</label>
                     <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Name" name="Name">
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputPassword1">Password</label>
+                    <label for="exampleInputPassword1" style="font-size:18px;">Password</label>
                     <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"
                            name="Password">
                 </div>
                 <div style="visibility:hidden;">sss</div>
-                <button type="submit" class="btn btn-default">Submit</button>
+                <button type="submit" style="background-color:#3B7AB6; color:white;" class="btn btn-default">Submit</button>
             </form>
 
             <a href="/register">Click here to register</a>

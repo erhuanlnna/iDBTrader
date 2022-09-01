@@ -14,7 +14,7 @@
         border: 1px solid #dddddd;
         width: 100%;
         height: 100vh;
-        background-image: url('https://images.pexels.com/photos/1532771/pexels-photo-1532771.jpeg?auto=compress&cs=tinysrgb&w=1600');
+        //background-image: url('https://images.pexels.com/photos/1532771/pexels-photo-1532771.jpeg?auto=compress&cs=tinysrgb&w=1600');
 
         background-size: 100% 100%;
         }
@@ -63,7 +63,7 @@
 
             padding: 10px;
         }
-        .B-color{color:blue;}
+        .B-color{color:black;}
 
         .right{
             width:590px;
@@ -85,6 +85,10 @@
         width:400px;
         }
 
+        table th,td{
+        border: 1px solid #ddd
+        }
+
 
 
     </style>
@@ -92,83 +96,82 @@
 <body>
 <div class="outer_box">
     <div class="logo">
-        <img src="https://i.ibb.co/p0vctG3/logo.png"/>
+        <img src="/static/logo.png">
     </div>
     <div class="account">
-        <h1>Data details</h1>
+        <a href="/"><img src="/static/back.png" style="width:50px;float:left;"></a>
+        <h1>Data details&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1>
         <div class="outer_left">
             <div class="inner">
-                Dataset name
+                <label> Dataset name</label>
             </div>
             <div class="inner">
                 <div class="B-color">{{info[0]["Name"]}}</div>
             </div>
 
             <div class="inner">
-                Seller name
+                <label>Seller name</label>
             </div>
             <div class="inner">
                 <div class="B-color">{{info[0]["Owner"]}}</div>
             </div>
 
             <div class="inner">
-                Field
+                <label>Field</label>
             </div>
             <div class="inner">
                 <div class="B-color">{{info[0]["Field"]}}</div>
             </div>
 
             <div class="inner">
-                Size
+                <label>Size</label>
             </div>
             <div class="inner">
                 <div class="B-color">{{info[0]["Size"]}}</div>
             </div>
 
             <div class="inner">
-                Base price
+                <label>Base price</label>
             </div>
             <div class="inner">
                 <div class="B-color">{{info[0]["BasePrice"]}}</div>
             </div>
 
             <div class="inner">
-                Dataset No.
+                <label>Dataset No.</label>
             </div>
             <div class="inner">
                 <div class="B-color">{{info[0]["DID"]}}</div>
             </div>
 
             <div class="inner">
-                Create date
+                <label>Create date</label>
             </div>
             <div class="inner">
                 <div class="B-color">{{info[0]["CreateDate"]}}</div>
             </div>
 
             <div class="inner">
-                Keyword
+                <label>Keyword</label>
             </div>
             <div class="inner">
                 <div class="B-color">{%for i in keyword%}{{i}}&emsp;&emsp;{%endfor%}</div>
             </div>
 
             <div class="inner">
-                Sale number
+                <label>Sale number</label>
             </div>
             <div class="inner">
                 <div class="B-color">{{info[0]["SaleNum"]}}</div>
             </div>
-            <div>
-                <a href="/">Go back to homepage</a>
-            </div>
+
 
 
         </div>
         <div class="outer_right">
             <div class="right">
                 <div class="table-responsive">
-                    <table class="table table-hover" style="font-size:18px; background-color: rgba(255,255,255,0.5);">
+                    <table class="table table-striped" style="font-size:18px; background-color: rgba(255,255,255,0.5);">
                         <tr>
                             {%for key in data[0].keys()%}
                             {%if key != 'empty_num'%}

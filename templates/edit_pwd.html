@@ -73,28 +73,30 @@ margin-top: auto;
 <body>
 <div class="outer_box">
     <div class="logo">
-        <img src="https://i.ibb.co/p0vctG3/logo.png"/>
+        <img src="/static/logo.png">
     </div>
     <div class="center_form">
-        <p class="title"><span>E&nbsp;D&nbsp;I&nbsp;T&nbsp;&nbsp;&nbsp;&nbsp;Y&nbsp;O&nbsp;U&nbsp;R&nbsp;&nbsp;&nbsp;&nbsp;P&nbsp;A&nbsp;S&nbsp;S&nbsp;W&nbsp;O&nbsp;R&nbsp;D</span></p>
+        <p class="title">
+            <a href="/"><img src="/static/back.png" style="width:50px;float:left;"></a>
+            <span style="font-size:15px;">E&nbsp;D&nbsp;I&nbsp;T&nbsp;&nbsp;&nbsp;&nbsp;Y&nbsp;O&nbsp;U&nbsp;R&nbsp;&nbsp;&nbsp;&nbsp;P&nbsp;A&nbsp;S&nbsp;S&nbsp;W&nbsp;O&nbsp;R&nbsp;D&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>
         <div class="box_two">
             {% with messages = get_flashed_messages() %}
             <div style="color: blue">{{ messages[0] }}</div>
             {% endwith %}
             <form action="{{ url_for('edit_pwd') }}" method="POST">
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Old password</label>
+                    <label for="exampleInputEmail1" style="font-size:18px">Old password</label>
                     <input type="text" class="form-control" id="exampleInputEmail1" placeholder="old password" name="Old password">
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputPassword1">Password</label>
+                    <label for="exampleInputPassword1" style="font-size:18px">New password</label>
                     <input type="password" class="form-control" id="exampleInputPassword1" placeholder="new password" name= "New password">
                 </div>
                 <div style="visibility:hidden;">sss</div>
-                <button type="submit" class="btn btn-default">Submit</button>
+                <button type="submit" style="background-color:#3B7AB6; color:white;" class="btn btn-default">Submit</button>
             </form>
 
-            <a href="/">Go back to homepage</a>
+
         </div>
 
     </div>

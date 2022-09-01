@@ -15,7 +15,7 @@
         border: 1px solid #dddddd;
         width: 100%;
         height: 100vh;
-        background-image: url('https://images.pexels.com/photos/1532771/pexels-photo-1532771.jpeg?auto=compress&cs=tinysrgb&w=1600');
+        //background-image: url('https://images.pexels.com/photos/1532771/pexels-photo-1532771.jpeg?auto=compress&cs=tinysrgb&w=1600');
 
         background-size: 100% 100%;
         }
@@ -42,7 +42,7 @@
         }
         .inner{
             width: 1120px;
-            //border: 1px solid #dddddd;
+            border: 1px solid #dddddd;
             height: 80px;
             float:left;
 
@@ -62,6 +62,47 @@
         width:400px;
         }
 
+        .inner1{
+            width: 200px;
+            border: 1px solid #dddddd;
+            height: 60px;
+            float:left;
+            //Text-align:center;
+
+            padding: 15px ;
+        }
+
+        .inner2{
+            width: 620px;
+            border: 1px solid #dddddd;
+            height: 60px;
+            float:left;
+
+            padding: 10px;
+        }
+        .tip{
+            width: 300px;
+            border: 1px solid #dddddd;
+            height: 60px;
+            float:left;
+
+            padding: 15px;
+        }
+        .inner3{
+            width: 1120px;
+            border: 1px solid #dddddd;
+            height: 60px;
+            float:left;
+
+            padding: 10px;
+        }
+        .inner3 button{float:right;}
+
+        table th,td{
+        border: 1px solid #ddd
+        }
+
+
 
 
 
@@ -71,38 +112,55 @@
 <body>
 <div class="outer_box">
     <div class="logo">
-        <img src="https://i.ibb.co/p0vctG3/logo.png"/>
+        <img src="/static/logo.png">
     </div>
     <div class="account">
-        <h1>Name: {{Name}}</h1>
+        <a href="/"><img src="/static/back.png" style="width:50px;float:left;"></a>
+        <h1>{{Name}}’s uploaded datasets</h1>
         <form class="form-inline" action="{{ url_for('manage_dataset') }}" method="POST">
-            <div class="inner">
-
-                <div class="form-group">
-                    <label for="keyword1">Keyword</label>
-                    <input type="text" class="form-control" id="keyword1" placeholder="keyword" name="keyword">
-                </div>
-                <div class="form-group">
-                    <label for="DID1">Dataset No.</label>
-                    <input type="text" class="form-control" id="DID1" placeholder="Dataset No." name="did">
-                </div>
-
-
-
-
-                <div class="form-group">
-                    <label for="datefrom1">Create date</label>
-                    <input type="text" class="form-control" id="datefrom1" placeholder="begin" name="begin_date">
-                </div>
-
-                <div class="form-group">
-                    <label for="dateto1">to</label>
-                    <input type="text" class="form-control" id="dateto1" placeholder="end" name="end_date">
-                </div>
-
+            <div class="inner1">
+                <label>Keyword</label>
             </div>
 
-            <div class="inner">
+            <div class="inner2">
+                <input style="width:582px;" type="text" class="form-control" placeholder="keyword" name="keyword">
+            </div>
+            <div class="tip">
+                <span>Input keyword,e.g.,</span>
+                <span style="font-style: italic;">NBA</span>
+            </div>
+
+            <div class="inner1">
+                <label>Dataset No.</label>
+            </div>
+
+            <div class="inner2">
+                <input style="width:582px;" type="text" class="form-control" placeholder="Dataset No." name="did">
+            </div>
+
+            <div class="tip">
+                <span>Input dataset number,e.g.,</span>
+                <span style="font-style: italic;">5</span>
+            </div>
+
+
+            <div class="inner1">
+                <label>Create date</label>
+            </div>
+
+            <div class="inner2">
+                <input style="width:280px;" type="text" class="form-control" placeholder="begin" name="begin_date">
+                <label>to</label>
+                <input style="width:280px;" type="text" class="form-control" placeholder="end" name="end_date">
+            </div>
+
+            <div class="tip">
+                <span>Input create date,e.g.,</span>
+                <span style="font-style: italic;">2022.5,2022.7</span>
+            </div>
+
+
+            <div class="inner3">
                 <button type="reset" value="Reset" name="reset" class="btn btn-default">Reset</button>
                 <button type="submit" value="Search" class="btn btn-primary">Search</button>
             </div>
@@ -111,8 +169,8 @@
         </form>
 
 
-        <div class="table" >
-            <table class="table table-hover" style="font-size:18px; background-color: rgba(255,255,255,0.5);">
+        <div class="table">
+            <table class="table table-striped" style="border:1px solid black;height:20px;font-size:18px; background-color: rgba(255,255,255,0.5);">
                 <tr>
                     <th>Dataset No.</th>
                     <th>Name</th>
@@ -139,7 +197,7 @@
         </div>
 
 
-        <a href="/">Go back to homepage</a>
+
     </div>
 </div>
 </body>

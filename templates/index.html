@@ -7,15 +7,17 @@
     <title>Index</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
           integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+
     <style>
 
         .outer_box {
         position: relative;
 
-        border: 1px solid #dddddd;
+        //border: 1px solid #dddddd;
         width: 100%;
         height: 100vh;
-        background-image: url('https://images.pexels.com/photos/1532771/pexels-photo-1532771.jpeg?auto=compress&cs=tinysrgb&w=1600');
+        //background-image: url('https://images.pexels.com/photos/1532771/pexels-photo-1532771.jpeg?auto=compress&cs=tinysrgb&w=1600');
 
         background-size: 100% 100%;
         }
@@ -23,12 +25,12 @@
         .account{
             width: 1125px;
 
-            height: 920px;
+            height: 1070px;
             background-color: rgba(134, 221, 221, 0.219);
             box-shadow: 0px 0px 3px rgb(76, 219, 219);
             position: absolute;
             left: 50%;
-            top: 50%;
+            top: 60%;
             transform: translate(-50%, -50%);
 
             border: 1px solid #dddddd;
@@ -52,27 +54,64 @@
 
         }
 
-        .inner{
-            width: 1120px;
-            \\border: 1px solid #dddddd;
-            height: 80px;
+        .inner1{
+            width: 200px;
+            border: 1px solid #dddddd;
+            height: 60px;
+            float:left;
+            //Text-align:center;
+
+            padding: 15px ;
+        }
+
+        .inner2{
+            width: 620px;
+            border: 1px solid #dddddd;
+            height: 60px;
             float:left;
 
             padding: 10px;
         }
+        .tip{
+            width: 300px;
+            border: 1px solid #dddddd;
+            height: 60px;
+            float:left;
 
-        .inner button{float:right;}
+            padding: 15px;
+        }
+
+        .inner3{
+            width: 1120px;
+            //border: 1px solid #dddddd;
+            height: 60px;
+            float:left;
+
+            padding: 10px;
+        }
+        .inner3 button{float:right;}
 
         .table{
             width: 1120px;
             border: 1px solid #dddddd;
-            height: 300px;
+            height: 250px;
             float:left;
             overflow-y: scroll;
         }
         .logo img{
         width:300px;
         }
+
+        table th,td{
+        border: 1px solid #ddd
+        }
+
+
+
+
+
+
+
 
 
 
@@ -83,9 +122,10 @@
 <body>
 <div class="outer_box">
     <div class="logo">
-        <img src="https://i.ibb.co/p0vctG3/logo.png"/>
+        <img src="/static/logo.png">
     </div>
     <div class="account">
+        <a href="/login"><img src="/static/back.png" style="width:50px;float:left;"></a>
         <h1>All datasets&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Identity: {{Role}}</h1>
         <form class="form-inline" action="{{ url_for('index') }}" method="POST">
             <div class="smaller">
@@ -96,8 +136,9 @@
             </div>
             <div class="smaller">
                 {%if Role != "Buyer"%}
-                <a href="/manage_dataset">Browse dataset</a>
+                <a href="/manage_dataset">Manage dataset</a>
                 {%endif%}
+
             </div>
             <div class="smaller">
                 {%if Role == "Seller"%}
@@ -107,45 +148,84 @@
                 <a href="/show_user">Edit price parameter</a>
                 {%endif%}
             </div>
-            <div class="inner">
 
-                <div class="form-group">
-                    <label for="keyword1">Dataset Name</label>
-                    <input type="text" class="form-control" id="keyword1" placeholder="Name" name="keyword">
-                </div>
-                <div class="form-group">
-                    <label for="DID1">Dataset No.</label>
-                    <input type="text" class="form-control" id="DID1" placeholder="Dataset No." name="did">
-                </div>
-                <div class="form-group">
-                    <label for="sellername1">Seller name</label>
-                    <input type="text" class="form-control" id="sellername1" placeholder="seller name"
-                           name="seller_name">
-                </div>
+            <div class="inner1">
+                <label>Dataset Name</label>
+            </div>
+
+            <div class="inner2">
+                <input style="width:582px;" type="text" class="form-control" placeholder="Name" name="keyword">
+            </div>
+            <div class="tip">
+                <span>Input dataset name,e.g.,</span>
+                <span style="font-style: italic;">NBA player</span>
+            </div>
+
+            <div class="inner1">
+                <label>Dataset No.</label>
+            </div>
+
+            <div class="inner2">
+                <input style="width:582px;" type="text" class="form-control" placeholder="Dataset No." name="did">
+            </div>
+
+            <div class="tip">
+                <span>Input dataset number,e.g.,</span>
+                <span style="font-style: italic;">5</span>
+            </div>
+
+            <div class="inner1">
+                <label>Keyword</label>
+            </div>
+
+            <div class="inner2">
+                <input style="width:582px;" type="text" class="form-control" placeholder="keyword" name="keyword">
+            </div>
+            <div class="tip">
+                <span>Input keyword,e.g.,</span>
+                <span style="font-style: italic;">NBA</span>
+            </div>
+
+            <div class="inner1">
+                <label>Seller name</label>
+            </div>
+
+            <div class="inner2">
+                <input style="width:582px;" type="text" class="form-control" placeholder="seller name"
+                       name="seller_name">
+            </div>
+
+            <div class="tip">
+                <span>Input dataset name,e.g.,</span>
+                <span style="font-style: italic;">NBA player list</span>
             </div>
 
 
-            <div class="inner">
-                <div class="form-group">
-                    <label for="datefrom1">Create date</label>
-                    <input type="text" class="form-control" id="datefrom1" placeholder="begin" name="begin_date">
-                </div>
-
-                <div class="form-group">
-                    <label for="dateto1">to</label>
-                    <input type="text" class="form-control" id="dateto1" placeholder="end" name="end_date">
-                </div>
-
+            <div class="inner1">
+                <label>Create date</label>
             </div>
 
-            <div class="inner">
+            <div class="inner2">
+                <input style="width:280px" type="text" class="form-control" placeholder="begin" name="begin_date">
+                <label>to</label>
+                <input style="width:280px" type="text" class="form-control" placeholder="end" name="end_date">
+            </div>
+
+            <div class="tip">
+                <span>Input create date,e.g.,</span>
+                <span style="font-style: italic;">2022.5,2022.7</span>
+            </div>
+
+
+            <div class="inner3">
                 <button type="reset" value="Reset" name="reset" class="btn btn-default">Reset</button>
                 <button type="submit" value="Search" class="btn btn-primary">Search</button>
             </div>
 
 
             <div class="table">
-                <table class="table table-hover" style="font-size:18px; background-color: rgba(255,255,255,0.8);">
+                <table class="table table-striped"
+                       style="border:1px solid black;height:20px;font-size:18px; background-color: rgba(255,255,255,0.8);">
                     <tr>
                         <th>Dataset No.</th>
                         <th>Name</th>
@@ -153,7 +233,7 @@
                         <th>Field</th>
                         <th>Create date</th>
                         <th>Size</th>
-                        <th>Sale number</th>
+                        <th>Sales volume</th>
                         <th>Details</th>
                     </tr>
                     {%for data in all_data%}
@@ -165,44 +245,72 @@
                         <td>{{data["CreateDate"]}}</td>
                         <td>{{data["Size"]}}</td>
                         <td>{{data["SaleNum"]}}</td>
-                        <td><a href="/detail/{{data["DID"]}}/">Links</a></td>
+                        <td><a href="/detail/{{data["DID"]}}/">Links </a> </td>
                     </tr>
                     {%endfor%}
                 </table>
             </div>
             {%if Role == "Buyer"%}
-            <div class="inner">
-                <div class="form-group">
-                    <label>Seller name</label>
-                    <input type="text" class="form-control" name="Seller name"
-                           placeholder="Please select seller">
-                </div>
-                <div class="form-group">
-                    <label>SQL query</label>
-                    <input type="text" class="form-control" name="SQL query"
-                           placeholder="Please input the SQL query">
-                </div>
+            <div class="inner1">
+                <label>Seller name</label>
+            </div>
+
+            <div class="inner2">
+                <input type="text" style="width:582px;" class="form-control" name="Seller name"
+                       placeholder="Please select seller">
+            </div>
+            <div class="tip">
+                <span>Input seller's name,e.g.,</span>
+                <span style="font-style: italic;">seller1</span>
+            </div>
+
+
+            <div class="inner1">
+                <label>SQL query</label>
+            </div>
+            <div class="inner2">
+                <input type="text" style="width:582px;" class="form-control" name="SQL query"
+                       placeholder="Please input the SQL query">
+            </div>
+            <div class="tip">
+                <span>Input query method (select .. from ..),e.g.,</span>
+                <span style="font-style: italic;">select age from NBA player list</span>
+            </div>
+
+            <div class="inner1">
+                <label>Query price:</label>
+            </div>
+            <div class="inner2" style="padding:15px; font-size:20px;">
+                {{price}}
+            </div>
+            <div class="tip">
+                <span>The price of the data.</span>
+
+            </div>
+
+
+            <div class="inner3">
+                {% with messages = get_flashed_messages() %}
+                <div style="color: red">{{ messages[0] }}</div>
+                {% endwith %}
+
                 <button type="submit" class="btn btn-default" type="submit" value="Check price" name="checkprice">Check
                     price
                 </button>
+                <button type="submit" class="btn btn-default" type="submit" value="Take order" name="takeorder"
+                        style="background-color:#3B7AB6; color:white;">Take order
+                </button>
 
-                <div class="font" style="font-size:20px;">
-                    Query price:{{price}}
-                    <button type="submit" class="btn btn-default" type="submit" value="Take order" name="takeorder"
-                            style="background-color:#3B7AB6; color:white;">Take order
-                    </button>
-                </div>
             </div>
+
+
             {%endif%}
         </form>
 
 
-        <div class="inner">{% with messages = get_flashed_messages() %}
-            <div style="color: red">{{ messages[0] }}</div>
-            {% endwith %}
-
+        <div class="inner3">
         </div>
-        <a href="/login">Go back to login</a>
+
 
     </div>
 </div>

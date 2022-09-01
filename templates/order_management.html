@@ -14,7 +14,7 @@
         //border: 1px solid #dddddd;
         width: 100%;
         height: 100vh;
-        background-image: url('https://images.pexels.com/photos/1532771/pexels-photo-1532771.jpeg?auto=compress&cs=tinysrgb&w=1600');
+        //background-image: url('https://images.pexels.com/photos/1532771/pexels-photo-1532771.jpeg?auto=compress&cs=tinysrgb&w=1600');
 
         background-size: 100% 100%;
         }
@@ -39,16 +39,44 @@
         .account h1{
             text-align: center;
         }
-        .inner{
-            width: 1125px;
-            //border: 1px solid #dddddd;
-            height: 80px;
+        .inner1{
+            width: 200px;
+            border: 1px solid #dddddd;
+            height: 60px;
+            float:left;
+            //Text-align:center;
+
+            padding: 15px ;
+        }
+
+        .inner2{
+            width: 620px;
+            border: 1px solid #dddddd;
+            height: 60px;
             float:left;
 
             padding: 10px;
         }
 
-        .inner button{float:right;}
+
+        .tip{
+            width: 300px;
+            border: 1px solid #dddddd;
+            height: 60px;
+            float:left;
+
+            padding: 15px;
+        }
+
+        .inner3{
+            width: 1120px;
+            border: 1px solid #dddddd;
+            height: 60px;
+            float:left;
+
+            padding: 10px;
+        }
+        .inner3 button{float:right;}
 
         .table{
             width: 1125px;
@@ -60,6 +88,12 @@
         .logo img{
         width:300px;
         }
+        table th,td{
+        border: 1px solid #ddd
+        }
+
+
+
 
 
 
@@ -70,52 +104,91 @@
 <body>
 <div class="outer_box">
     <div class="logo">
-        <img src="https://i.ibb.co/p0vctG3/logo.png"/>
+        <img src="/static/logo.png">
     </div>
     <div class="account">
-        <h1>Order management&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Identity: {{Role}}</h1>
+        <a href="/"><img src="/static/back.png" style="width:50px;float:left;"></a>
+        <h1>Order management&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Identity: {{Role}}&emsp;&emsp;</h1>
         <form class="form-inline" action="{{ url_for('order_management') }}" method="POST">
-            <div class="inner">
-
-                <div class="form-group">
-                    <label for="keyword1">Dataset Name</label>
-                    <input type="text" class="form-control" id="keyword1" placeholder="Dataset Name" name="DName">
-                </div>
-                <div class="form-group">
-                    <label for="DID1">Dataset No.</label>
-                    <input type="text" class="form-control" id="DID1" placeholder="Dataset No." name="OID">
-                </div>
-            </div>
-
-            <div class="inner">
-                {%if Role != "Seller"%}
-                <div class="form-group">
-                    <label for="sellername1">Seller name</label>
-                    <input type="text" class="form-control" id="sellername1" placeholder="seller name" name="Seller">
-                </div>
-                {%endif%}
-                {%if Role != "Buyer"%}
-                <div class="form-group">
-                    <label for="sellername2">Buyer name</label>
-                    <input type="text" class="form-control" id="sellername2" placeholder="buyer name" name="Buyer">
-                </div>
-                {%endif%}
-            </div>
-
-            <div class="inner">
-                <div class="form-group">
-                    <label for="datefrom1">Order date</label>
-                    <input type="text" class="form-control" id="datefrom1" placeholder="begin" name="begin_date">
-                </div>
-
-                <div class="form-group">
-                    <label for="dateto1">to</label>
-                    <input type="text" class="form-control" id="dateto1" placeholder="end" name="end_date">
-                </div>
+            <div class="inner1">
+                <label>Dataset Name</label>
 
             </div>
 
-            <div class="inner">
+            <div class="inner2">
+
+                <input style="width:582px;" type="text" class="form-control" placeholder="Dataset Name" name="DName">
+            </div>
+
+            <div class="tip">
+                <span>Input dataset name,e.g.,</span>
+                <span style="font-style: italic;">NBA player</span>
+            </div>
+
+
+            <div class="inner1">
+
+                <label for="DID1">Dataset No.</label>
+            </div>
+
+            <div class="inner2">
+
+                <input style="width:582px;" type="text" class="form-control" id="DID1" placeholder="Dataset No."
+                       name="OID">
+            </div>
+
+            <div class="tip">
+                <span>Input dataset number,e.g.,</span>
+                <span style="font-style: italic;">5</span>
+            </div>
+
+            {%if Role != "Seller"%}
+            <div class="inner1">
+                <label>Seller name</label>
+            </div>
+
+            <div class="inner2">
+                <input style="width:582px;" type="text" class="form-control" placeholder="seller name" name="Seller">
+            </div>
+
+            <div class="tip">
+                <span>Input seller's name,e.g.,</span>
+                <span style="font-style: italic;">seller1</span>
+            </div>
+            {%endif%}
+
+            {%if Role != "Buyer"%}
+            <div class="inner1">
+                <label>Buyer name</label>
+            </div>
+            <div class="inner2">
+                <input style="width:582px;" type="text" class="form-control" placeholder="buyer name" name="Buyer">
+            </div>
+            <div class="tip">
+                <span>Input buyer's name,e.g.,</span>
+                <span style="font-style: italic;">buyer1</span>
+
+            </div>
+            {%endif%}
+
+
+            <div class="inner1">
+                <label>Order date</label>
+            </div>
+
+            <div class="inner2">
+                <input style="width:280px;" type="text" class="form-control" placeholder="begin" name="begin_date">
+                <label for="dateto1">to</label>
+                <input style="width:280px;" type="text" class="form-control" id="dateto1" placeholder="end"
+                       name="end_date">
+
+            </div>
+            <div class="tip">
+                <span>Input create date,e.g.,</span>
+                <span style="font-style: italic;">2022.5,2022.7</span>
+            </div>
+
+            <div class="inner3">
                 <button type="reset" value="Reset" name="reset" class="btn btn-default">Reset</button>
                 <button type="submit" value="Search" class="btn btn-primary">Search</button>
             </div>
@@ -125,7 +198,8 @@
 
 
         <div class="table">
-            <table class="table table-hover" style="font-size:15px;background-color: rgba(255,255,255,0.5);">
+            <table class="table table-striped"
+                   style="border:1px solid black;height:20px;font-size:18px; background-color: rgba(255,255,255,0.8);">
                 {%if Role == "Buyer"%}
                 <tr>
                     <th>Order No.</th>
@@ -198,9 +272,7 @@
 
 
         </div>
-        <div class="inner">
-            <a href="/">Go back to homepage</a>
-        </div>
+
     </div>
 </div>
 </body>
