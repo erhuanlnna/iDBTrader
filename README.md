@@ -16,7 +16,7 @@ datadir=Your installation directory\\data
 
 4. In administrator mode, open command prompt, type "(Your installation directory)\bin\mysqld.exe --initialize-insecure"
 5. delete all files and folders under folder "upload"
-6. Run mysql, run the code in file "database_code.txt"
+6. Run mysql and the cods in file "database_code.txt" to construct the databases in iDBTrader
 7. In file "dataset.py", edit global variable "user" and "pwd" to the username and password of your local database
 8. Run app.py to start the website
 
@@ -25,5 +25,5 @@ datadir=Your installation directory\\data
 
 
 
-参考网址：https://www.runoob.com/mysql/mysql-install.html
-对照着看效果更佳
+You can refer to the website (https://www.runoob.com/mysql/mysql-install.html) for operation.
+
