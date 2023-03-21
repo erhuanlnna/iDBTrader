@@ -2,7 +2,7 @@ import pymysql
 import pandas as pd
 import os
 import numpy as np
-
+import re
 host = "127.0.0.1"
 port = 3306
 user='root'
@@ -42,6 +42,7 @@ def select(sql,db):  # 查询传入sql语句，返回result结果
         results = cursor.fetchall()
         return results
     except Exception as e:
+        # print('xxxxx')
         raise e
     finally:
         cursor.close()
@@ -65,7 +66,11 @@ def read_csv(filename,owner):
     #读取csv文件数据
     csv_name= os.path.dirname(__file__)+'/upload' '/%s/'%owner + filename + ".csv"
     data = pd.read_csv(csv_name, encoding="utf-8")
-    data = data.replace(np.NaN, None)
+    # data = data.replace(np.NaN, None)
+    # the above replace method does not work on huanhuan's computer
+    # so I do
+    data = data.where(data.notnull(), None)
+    # print(data)
     return data
 
 # def db_completeness(db_name, table_name):
@@ -125,19 +130,23 @@ def write_data(owner,dname):
     # types = f.dtypes
     field = [] #用来接收字段名称的列表
     table = [] #用来接收字段名称和字段类型的列表
+
     for item in columns:
+        # transform the column_name to the string that only contains the alphelt, number, and _
+        new_item = re.sub(r'[^A-Za-z0-9]', '_', item)
+        # print(new_item)
         if 'int' in str(f[item].dtype):
-            char = item + ' INT'
+            char = new_item + ' INT'
         elif 'float' in str(f[item].dtype):
-            char = item +' FLOAT'
+            char = new_item +' FLOAT'
         elif 'object' in str(f[item].dtype):
-            char = item +' VARCHAR(255)'
+            char = new_item +' VARCHAR(255)'
         elif 'datetime' in str(f[item].dtype):
-            char = item + ' DATETIME'
+            char = new_item + ' DATETIME'
         else:
-            char = item + ' VARCHAR(255)'
+            char = new_item + ' VARCHAR(255)'
         table.append(char)
-        field.append(item)
+        field.append(new_item)
     # 将table列表中的元素用逗号连接起来，组成table_sql语句中的字段名称和字段类型片段，用来创建表。
     tables = ','.join(table)
     fields = ','.join(field) 
@@ -152,6 +161,7 @@ def write_data(owner,dname):
     # print('table_sql is: ' + table_sql)
 
     # 开始创建数据库表
+    # print(table_sql)
     cursor.execute(table_sql)
     conn.commit()
 
@@ -166,9 +176,11 @@ def write_data(owner,dname):
     # 构建插入数据的SQL语句
     insert_sql = 'insert into {}({}) values({})'.format(dname,fields,s)
     # print('insert_sql is:' + insert_sql)
-
+    # print(fields)
+    # print(values)
     # 开始插入数据
     cursor.executemany(insert_sql, values) #使用 executemany批量插入数据
+    
     conn.commit()
 
     # close mysql
