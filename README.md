@@ -25,5 +25,5 @@ datadir=Your installation directory\\data
 
 
 
-You can refer to the website (https://www.runoob.com/mysql/mysql-install.html) for operation.
+You can refer to the website (https://www.runoob.com/mysql/mysql-install.html) for easy operation.
 
