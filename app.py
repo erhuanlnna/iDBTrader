@@ -116,11 +116,18 @@ def index():
                 buyer_data = dataset.select(buyer_sql,owner)
                 if buyer_data == ():
                     flash("Empty set!")
-                    return redirect(url_for("index"))
-                uca_price, certain_lineage_num, total_completeness, base_price_list, query_quality, quca_price, coefficient, sensitivity, strategy = SQL.check_price(buyer_sql, owner,current_user.get_id())
+                    return redirect(url_for("index")) 
             except:
                 buyer_sql = ""
+                
                 flash("illegal SQL query!")
+            try:
+               
+                uca_price, certain_lineage_num, total_completeness, base_price_list, query_quality, quca_price, coefficient, sensitivity, strategy, df = SQL.check_price(buyer_sql, owner,current_user.get_id())
+                data = [list(df.columns)] + list(df.values)
+            except:
+                buyer_sql = ""
+                flash("compute price error")
             else:
                 if strategy == "UCA":
                     price = uca_price
@@ -134,8 +141,8 @@ def index():
             Buyer = current_user.get_id()
             Create_Date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             UCAPrice = uca_price
-            Sale_data_num = len(buyer_data)
-            Access_data_num = certain_lineage_num / len(table_list)
+            Sale_data_num = len(data) - 1
+            Access_data_num = certain_lineage_num 
             Price_coefficient = coefficient
             Sensitivity = sensitivity
             Total_completeness = total_completeness
@@ -158,11 +165,7 @@ def index():
                 dataset.edit(update_sql, "transaction")
             
             # 下载 data文件
-            list_data = []
-            list_data.append(list(buyer_data[0]))
-            for i in buyer_data:
-                list_data.append(list(i.values()))
-            data = list_data
+            
             # # 重新获取数据
             # sql = "SELECT * FROM Dataset WHERE DID = %s"%DID
             # info = dataset.select(sql,"transaction")
