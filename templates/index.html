@@ -145,7 +145,7 @@
                 <a href="/upload">Upload new dataset</a>
                 {%endif%}
                 {%if Role == "Admin"%}
-                <a href="/show_user">Edit price parameter</a>
+                <a href="/show_user">Edit price settings</a>
                 {%endif%}
             </div>
 
@@ -229,7 +229,7 @@
                     <tr>
                         <th>Dataset No.</th>
                         <th>Name</th>
-                        <th>Seller name</th>
+                        <th>Seller</th>
                         <th>Field</th>
                         <th>Create date</th>
                         <th>Size</th>
@@ -245,7 +245,7 @@
                         <td>{{data["CreateDate"]}}</td>
                         <td>{{data["Size"]}}</td>
                         <td>{{data["SaleNum"]}}</td>
-                        <td><a href="/detail/{{data["DID"]}}/">Links </a> </td>
+                        <td><a href="/detail/{{data["DID"]}}/">Link </a> </td>
                     </tr>
                     {%endfor%}
                 </table>

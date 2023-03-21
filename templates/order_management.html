@@ -128,12 +128,12 @@
 
             <div class="inner1">
 
-                <label for="DID1">Dataset No.</label>
+                <label for="DID1">Order No.</label>
             </div>
 
             <div class="inner2">
 
-                <input style="width:582px;" type="text" class="form-control" id="DID1" placeholder="Dataset No."
+                <input style="width:582px;" type="text" class="form-control" id="DID1" placeholder="Order No."
                        name="OID">
             </div>
 
@@ -144,7 +144,7 @@
 
             {%if Role != "Seller"%}
             <div class="inner1">
-                <label>Seller name</label>
+                <label>Seller</label>
             </div>
 
             <div class="inner2">
@@ -159,7 +159,7 @@
 
             {%if Role != "Buyer"%}
             <div class="inner1">
-                <label>Buyer name</label>
+                <label>Buyer</label>
             </div>
             <div class="inner2">
                 <input style="width:582px;" type="text" class="form-control" placeholder="buyer name" name="Buyer">
@@ -264,7 +264,7 @@
                     <td>{{data["CreateDate"]}}</td>
                     <td>{{data["SQLquery"]}}</td>
                     <td>{{data["Price"]}}</td>
-                    <td><a href="/order_detail/{{data["OID"]}}/">Links</a></td>
+                    <td><a href="/order_detail/{{data["OID"]}}/">Link</a></td>
                 </tr>
                 {%endfor%}
                 {%endif%}

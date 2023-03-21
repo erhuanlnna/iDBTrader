@@ -116,7 +116,7 @@
     </div>
     <div class="account">
         <a href="/"><img src="/static/back.png" style="width:50px;float:left;"></a>
-        <h1>{{Name}}’s uploaded datasets</h1>
+        <h1>The uploaded datasets</h1>
         <form class="form-inline" action="{{ url_for('manage_dataset') }}" method="POST">
             <div class="inner1">
                 <label>Keyword</label>
@@ -174,7 +174,7 @@
                 <tr>
                     <th>Dataset No.</th>
                     <th>Name</th>
-                    <th>Seller name</th>
+                    <th>Seller</th>
                     <th>Field</th>
                     <th>Create date</th>
                     <th>Size</th>
@@ -190,7 +190,7 @@
                     <td>{{data["CreateDate"]}}</td>
                     <td>{{data["Size"]}}</td>
                     <td>{{data["SaleNum"]}}</td>
-                    <td><a href="/edit_dataset/{{data["DID"]}}//">Links</a></td>
+                    <td><a href="/edit_dataset/{{data["DID"]}}//">Link</a></td>
                 </tr>
                 {%endfor%}
             </table>
