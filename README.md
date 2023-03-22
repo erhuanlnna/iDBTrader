@@ -1,4 +1,4 @@
-# iDBTrader: Trade SPJ query on incomplete data with DBMS
+# iDBTrader: Trading SPJ query over incomplete data
 1. Download MySQL https://downloads.mysql.com/archives/community/ (we use version 5.7 in this project)
 2. Move file "my.ini" into installation directory
 3. In file "my.ini", edit basedir and datadir to your installation directory and subdirectory
