@@ -101,13 +101,15 @@ def index():
     global uca_price, certain_lineage_num, total_completeness, coefficient, sensitivity, strategy
     user_info = dataset.select('select * from User where Name = \'%s\'' %current_user.get_id(),'transaction')
     Role = user_info[0]["Role"]
+    rname = current_user.get_id()
     if  request.method == "POST":
+        dname = request.form["dname"]
         keyword = request.form["keyword"]
         did = request.form["did"]
         seller_name = request.form["seller_name"]
         begin_date = request.form["begin_date"]
         end_date = request.form["end_date"]
-        search_data = search_dataset(keyword,did,seller_name,begin_date,end_date)
+        search_data = search_dataset(dname,keyword,did,seller_name,begin_date,end_date)
         if request.form.get('checkprice') == 'Check price':
             price = 0
             buyer_sql = request.form["SQL query"]
@@ -134,7 +136,7 @@ def index():
                 else:
                     price = quca_price 
         if request.form.get('takeorder') == 'Take order' and buyer_sql != "" and owner != "":
-            # print(buyer_data)
+            print(buyer_data[:10])
             table_list = SQL.parse_sql_statements(buyer_sql)[0]
             DName = '; '.join(table_list)
             Seller = owner
@@ -175,7 +177,7 @@ def index():
             price = 0
             owner = ""
             return redirect(url_for("filedownloads"))
-        return render_template("index.html", Role = Role, all_data = search_data, price =price)
+        return render_template("index.html", Role = Role, rname = rname, all_data = search_data, price =price)
         
     # Get
     buyer_sql = ""
@@ -183,7 +185,7 @@ def index():
     price = 0
     owner = "" 
     all_data = search_all_saledataset()
-    return render_template("index.html", Role = Role, all_data = all_data, price = price)
+    return render_template("index.html", Role = Role, rname = rname, all_data = all_data, price = price)
 
 # 上传数据集界面
 @app.route("/upload",methods=["POST","GET"])
@@ -312,10 +314,19 @@ def detail(DID):
     owner = info[0]["Owner"]
     dname = info[0]["Name"]
     data = dataset.select('select * from %s'%dname,'%s'%owner)
-    data = data[0:7]
-    for i in range(7):
+    data = data[0:10]
+    for i in range(10):
         del data[i]["id0"]
+        del data[i]["empty_num"]
+        for j,k in data[i].items():
+            if(k == None):
+                data[i][j] = "NULL"
+        print(data[i])
 
+        # for j in range(len(data[i])):
+        #     if(data[i][j] == None):
+        #         data[i][j] = "NULL"
+    
     return render_template("detail.html", data=data, keyword=keyword, info = info, price = price, DID=DID, Role = Role)   
 
 # 卖家查看自己上传的数据集
@@ -329,12 +340,13 @@ def manage_dataset():
         flash( "Access denied!" )
         return redirect(url_for('index'))
     if  request.method == "POST":
+        dname = request.form["dname"]
         keyword = request.form["keyword"]
         did = request.form["did"]
         seller_name = Name
         begin_date = request.form["begin_date"]
         end_date = request.form["end_date"]
-        search_data = search_dataset(keyword,did,seller_name,begin_date,end_date)
+        search_data = search_dataset(dname, keyword,did,seller_name,begin_date,end_date)
         return render_template("manage_dataset.html", Name = Name, all_data = search_data)
         
     # Get
@@ -400,19 +412,9 @@ def edit_dataset(DID):
                 newpricestrategy = "QUCA"
             else:
                 newpricestrategy = "UCA"
+            # change of price strategy of all datasets of a seller
             sql = "UPDATE Dataset SET PriceStrategy = \'%s\' where Owner = \'%s\'"%(newpricestrategy,info[0]["Owner"])
-        # elif  request.form.get('editpricecoefficient') == 'Change':
-        #     newpricecoefficient = request.form["newpricecoefficient"]
-        #     if newpricecoefficient =="":
-        #         return render_template("edit_dataset.html", Role=Role,keyword=keyword, info = info, DID=DID)
-        #     # sql = "UPDATE Dataset SET Pricecoefficient= \'%s\' where Owner = \'%s\'"%(newpricecoefficient,info[0]["Owner"])
-        #     sql = "UPDATE Dataset SET Pricecoefficient= \'%s\' "%newpricecoefficient
-        # elif  request.form.get('editsensitivity') == 'Change':
-        #     newsensitivity = request.form["newsensitivity"]
-        #     if newsensitivity =="":
-        #         return render_template("edit_dataset.html", Role=Role,keyword=keyword, info = info, DID=DID)
-        #     # sql = "UPDATE Dataset SET Sensitivity= \'%s\' where Owner = \'%s\'"%(newsensitivity,info[0]["Owner"])
-        #     sql = "UPDATE Dataset SET Sensitivity= \'%s\' "%newsensitivity
+            # sql = "UPDATE Dataset SET PriceStrategy = \'%s\' where DID = \'%s\'"%(newpricestrategy,DID)
         
         dataset.edit(sql,"transaction") 
         info = dataset.select("SELECT * FROM Dataset WHERE DID = %s"%DID,"transaction")
@@ -477,6 +479,18 @@ def edit_price_parameter(User):
             if newsensitivity =="":
                 return render_template("edit_price_parameter.html", user_info = user_info)
             sql = f"UPDATE User SET Sensitivity= \'{newsensitivity}\' where Name = \'{User}\'"
+        elif  request.form.get('editcoeff') == 'ChangeAll':
+            newpricecoefficient = request.form["newpricecoefficient"]
+            if newpricecoefficient =="":
+                return render_template("edit_price_parameter.html", user_info = user_info)
+            sql = f"UPDATE User SET Pricecoefficient= \'{newpricecoefficient}\'"
+    
+        elif  request.form.get('editsensitivity') == 'ChangeAll':
+            newsensitivity = request.form["newsensitivity"]
+            if newsensitivity =="":
+                return render_template("edit_price_parameter.html", user_info = user_info)
+            sql = f"UPDATE User SET Sensitivity= \'{newsensitivity}\'"
+        
         dataset.edit(sql,"transaction") 
     
     # Get

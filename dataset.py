@@ -6,7 +6,7 @@ import re
 host = "127.0.0.1"
 port = 3306
 user='root'
-pwd=''
+pwd='lnn1998828'
 charset='utf8'
 database='transaction'
 PRICE_COEFFICIENT = 1

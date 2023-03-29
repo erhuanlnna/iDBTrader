@@ -33,9 +33,11 @@ def parse_sql_statements(sql_statement : str):
     else:
         rule_projections = r'(?<=from).*$'
     table_list = re.findall(rule_projections, sql_statement)
+    # print(table_list)
     table_list = table_list[0].replace(' ','').split(',')
+    # print(table_list)
     table_id = [str(i) + '.id0 as id_0, ' + str(i) +'.empty_num as emptynum_0'  for i in table_list ]
-
+    
     new_sql_statement = sql_statement.replace('distinct ', '')
     location = new_sql_statement.index("from") - 1
     str_list = list(new_sql_statement)
