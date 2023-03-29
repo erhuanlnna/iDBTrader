@@ -65,7 +65,34 @@
         .logo img{
         width:400px;
         }
+        .mainDiv {
+            float: left;
+            margin-left: 0%;
+            width: 100%;
+            margin-top: 0%;
+            height: 25px;
+            margin-bottom: 3%;
+        }
 
+        .viceDiv_1 {
+            float: left;
+            margin-left: 0%;
+            width: 30%;
+            height: 20px;  
+        }
+        .viceDiv_2 {
+            float: left;
+            margin-left: 0%;
+            width: 27%;
+            height: 20px;  
+        }
+        .viceDiv_3 {
+            float: right;
+            margin-left: 0%;
+            width: 40%;
+            height: 20px;  
+            font-size:19px;
+        }
 
 
 
@@ -76,12 +103,18 @@
 </head>
 <body>
 <div class="outer_box">
-    <div class="logo">
-        <img src="/static/logo.png">
-    </div>
     <div class="account">
+    <div class="mainDiv">
+        <div class="viceDiv_1" align="center">
         <a href="/manage_dataset"><img src="/static/back.png" style="width:50px;float:left;"></a>
-        <h1>Dataset details</h1>
+            </div>
+            <div class="viceDiv_2" align="center">
+             <img src="/static/logo.png" width="200">
+            </div>
+            <div class="viceDiv_3" align="center">
+             <h2>Metadata managment</h2>
+            </div>
+        </div>
         {%if Role == "Seller"%}
         <form method="post" action="/edit_dataset/{{DID}}/" class="form-inline">
 
@@ -213,7 +246,7 @@
             <div class="inner">
 
 
-                <button type="submit" class="btn btn-primary" value="Sell/Unsell" name="editstate">Sell/Unsell</button>
+                <button type="submit" class="btn btn-primary" value="Sell/Unsell" name="editstate">Sell / Unsell</button>
 
             </div>
 
@@ -225,7 +258,7 @@
             </div>
             <div class="inner">
 
-                <button type="submit" class="btn btn-primary" value="Change" name="editstrategy">UCA/QUCA</button>
+                <button type="submit" class="btn btn-primary" value="Change" name="editstrategy">UCA / QUCA</button>
 
             </div>
 

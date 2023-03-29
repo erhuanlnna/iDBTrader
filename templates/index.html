@@ -23,7 +23,7 @@
         }
 
         .account{
-            width: 1125px;
+            width: 1135px;
 
             height: 1070px;
             background-color: rgba(134, 221, 221, 0.219);
@@ -36,7 +36,7 @@
             border: 1px solid #dddddd;
             margin-left: auto;
             margin-right: auto;
-            margin-top: auto;
+            margin-top: 0px;
 
         }
         .account h1{
@@ -60,7 +60,7 @@
             height: 60px;
             float:left;
             //Text-align:center;
-
+            font-size:20px;
             padding: 15px ;
         }
 
@@ -69,15 +69,15 @@
             border: 1px solid #dddddd;
             height: 60px;
             float:left;
-
+            font-size:21px;
             padding: 10px;
         }
         .tip{
-            width: 300px;
+            width: 310px;
             border: 1px solid #dddddd;
             height: 60px;
             float:left;
-
+            font-size:18px;
             padding: 15px;
         }
 
@@ -86,7 +86,7 @@
             //border: 1px solid #dddddd;
             height: 60px;
             float:left;
-
+            font-size:20px;
             padding: 10px;
         }
         .inner3 button{float:right;}
@@ -99,13 +99,35 @@
             overflow-y: scroll;
         }
         .logo img{
-        width:300px;
+        
+        vertical-align: middle;
+        text-align: center;
         }
 
         table th,td{
         border: 1px solid #ddd
         }
+        .mainDiv {
+            float: left;
+            margin-left: 0%;
+            width: 100%;
+            margin-top: 0%;
+            height: 20px;
+            margin-bottom: 2%;
+        }
 
+        .viceDiv_1,.viceDiv_2 {
+            float: left;
+            margin-left: 0%;
+            width: 30%;
+            height: 20px;  
+        }
+        .viceDiv_3 {
+            float: right;
+            margin-left: 0%;
+            width: 30%;
+            height: 20px;  
+        }
 
 
 
@@ -121,12 +143,20 @@
 </head>
 <body>
 <div class="outer_box">
-    <div class="logo">
-        <img src="/static/logo.png">
-    </div>
     <div class="account">
-        <a href="/login"><img src="/static/back.png" style="width:50px;float:left;"></a>
-        <h1>All datasets&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Identity: {{Role}}</h1>
+    
+        <div class="mainDiv">
+        <div class="viceDiv_1" align="center">
+         <a href="/login"><img src="/static/back.png" style="width:50px;float:left;"></a>
+            </div>
+            <div class="viceDiv_2" align="center">
+             <img src="/static/logo.png" width="200">
+            </div>
+            <div class="viceDiv_3" align="center">
+             <h2>Login as: {{rname}} ({{Role}})</h2>
+            </div>
+    </div>
+        
         <form class="form-inline" action="{{ url_for('index') }}" method="POST">
             <div class="smaller">
                 <a href="/edit_pwd">Edit password</a>
@@ -154,11 +184,11 @@
             </div>
 
             <div class="inner2">
-                <input style="width:582px;" type="text" class="form-control" placeholder="Name" name="keyword">
+                <input style="width:582px;" type="text" class="form-control" placeholder="Name" name="dname">
             </div>
             <div class="tip">
-                <span>Input dataset name,e.g.,</span>
-                <span style="font-style: italic;">NBA player</span>
+                <span>Input dataset name, e.g.,</span>
+                <span style="font-style: italic;">NBA</span>
             </div>
 
             <div class="inner1">
@@ -170,7 +200,7 @@
             </div>
 
             <div class="tip">
-                <span>Input dataset number,e.g.,</span>
+                <span>Input dataset id, e.g.,</span>
                 <span style="font-style: italic;">5</span>
             </div>
 
@@ -179,25 +209,25 @@
             </div>
 
             <div class="inner2">
-                <input style="width:582px;" type="text" class="form-control" placeholder="keyword" name="keyword">
+                <input style="width:582px;" type="text" class="form-control" placeholder="Keyword" name="keyword">
             </div>
             <div class="tip">
-                <span>Input keyword,e.g.,</span>
+                <span>Input keyword, e.g.,</span>
                 <span style="font-style: italic;">NBA</span>
             </div>
 
             <div class="inner1">
-                <label>Seller name</label>
+                <label>Seller</label>
             </div>
 
             <div class="inner2">
-                <input style="width:582px;" type="text" class="form-control" placeholder="seller name"
+                <input style="width:582px;" type="text" class="form-control" placeholder="Seller's name"
                        name="seller_name">
             </div>
 
             <div class="tip">
-                <span>Input dataset name,e.g.,</span>
-                <span style="font-style: italic;">NBA player list</span>
+                <span>Input seller name, e.g.,</span>
+                <span style="font-style: italic;">Alan</span>
             </div>
 
 
@@ -206,14 +236,16 @@
             </div>
 
             <div class="inner2">
-                <input style="width:280px" type="text" class="form-control" placeholder="begin" name="begin_date">
+                <input style="width:280px" type="date" class="form-control" name="begin_date">
+                <!-- <input style="width:280px" type="text" class="form-control" placeholder="begin" name="begin_date"> -->
                 <label>to</label>
-                <input style="width:280px" type="text" class="form-control" placeholder="end" name="end_date">
+                <input style="width:280px" type="date" class="form-control" name="end_date">
+                <!-- <input style="width:280px" type="text" class="form-control" placeholder="end" name="end_date"> -->
             </div>
 
             <div class="tip">
-                <span>Input create date,e.g.,</span>
-                <span style="font-style: italic;">2022.5,2022.7</span>
+                <span>Input create date</span>
+                <!-- <span style="font-style: italic;">20230101</span> -->
             </div>
 
 
@@ -260,8 +292,8 @@
                        placeholder="Please select seller">
             </div>
             <div class="tip">
-                <span>Input seller's name,e.g.,</span>
-                <span style="font-style: italic;">seller1</span>
+                <span>Input seller's name</span>
+                
             </div>
 
 
@@ -269,12 +301,15 @@
                 <label>SQL query</label>
             </div>
             <div class="inner2">
-                <input type="text" style="width:582px;" class="form-control" name="SQL query"
-                       placeholder="Please input the SQL query">
+                
+                <textarea style="width: 582px;height: 40px;font-size: 12px;border-radius: 5px;" name="SQL query"> 
+                    Please input the SQL query (iDBTrader supports selection, projection, and join queries)
+                </textarea>
+                <!-- <input type="text" style="width:582px;" class="form-control" name="SQL query" -->
+                       <!-- placeholder="Please input the SQL query"> -->
             </div>
             <div class="tip">
-                <span>Input query method (select .. from ..),e.g.,</span>
-                <span style="font-style: italic;">select age from NBA player list</span>
+                <span>Input the SPJ query </span>
             </div>
 
             <div class="inner1">
@@ -284,7 +319,7 @@
                 {{price}}
             </div>
             <div class="tip">
-                <span>The price of the data.</span>
+                <span>Output: The price of the data</span>
 
             </div>
 
@@ -298,7 +333,7 @@
                     price
                 </button>
                 <button type="submit" class="btn btn-default" type="submit" value="Take order" name="takeorder"
-                        style="background-color:#3B7AB6; color:white;">Take order
+                        style="background-color:#3B7AB6; color:white;">Place order
                 </button>
 
             </div>

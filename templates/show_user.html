@@ -19,7 +19,7 @@
         }
 
         .account{
-            width: 800px;
+            width: 1175px;
 
             height: 420px;
             background-color: rgba(134, 221, 221, 0.219);
@@ -52,21 +52,57 @@
         }
 
         table th,td{
-        border: 1px solid #ddd
+            border: 1px solid #ddd;
+        }
+        table tr{
+            width: 150px;
         }
 
-
+        .viceDiv_1 {
+            float: left;
+            margin-left: 0%;
+            width: 30%;
+            height: 20px;  
+        }
+        .viceDiv_2 {
+            float: left;
+            margin-left: 0%;
+            width: 30%;
+            height: 20px;  
+        }
+        .viceDiv_3 {
+            float: right;
+            margin-left: 0%;
+            width: 30%;
+            height: 20px;  
+        }
+        
+       .mainDiv {
+            float: left;
+            margin-left: 0%;
+            width: 100%;
+            margin-top: 0%;
+            height: 25px;
+            margin-bottom: 5%;
+        }
 
     </style>
 </head>
 <body>
 <div class="outer_box">
-    <div class="logo">
-        <img src="/static/logo.png">
-    </div>
     <div class="account">
+    
+        <div class="mainDiv">
+        <div class="viceDiv_1" align="center">
         <a href="/"><img src="/static/back.png" style="width:50px;float:left;"></a>
-        <h1>Price settings of the data buyer&emsp;</h1>
+            </div>
+            <div class="viceDiv_2" align="center">
+             <img src="/static/logo.png" width="200">
+            </div>
+            <div class="viceDiv_3" align="center">
+             <h2>Price settings</h2>
+            </div>
+        </div>
         <div class="table">
         <table class="table table-striped"
                        style="height:20px;font-size:18px; background-color: rgba(255,255,255,0.8);">

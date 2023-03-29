@@ -45,7 +45,7 @@
             height: 60px;
             float:left;
             //Text-align:center;
-
+            font-size:20px;
             padding: 15px ;
         }
 
@@ -54,26 +54,24 @@
             border: 1px solid #dddddd;
             height: 60px;
             float:left;
-
+            font-size:21px;
             padding: 10px;
         }
-
-
         .tip{
             width: 300px;
             border: 1px solid #dddddd;
             height: 60px;
             float:left;
-
+            font-size:18px;
             padding: 15px;
         }
 
         .inner3{
             width: 1120px;
-            border: 1px solid #dddddd;
+            //border: 1px solid #dddddd;
             height: 60px;
             float:left;
-
+            font-size:20px;
             padding: 10px;
         }
         .inner3 button{float:right;}
@@ -91,7 +89,33 @@
         table th,td{
         border: 1px solid #ddd
         }
+        .mainDiv {
+            float: left;
+            margin-left: 0%;
+            width: 100%;
+            margin-top: 0%;
+            height: 25px;
+            margin-bottom: 3%;
+        }
 
+        .viceDiv_1 {
+            float: left;
+            margin-left: 0%;
+            width: 30%;
+            height: 20px;  
+        }
+        .viceDiv_2 {
+            float: left;
+            margin-left: 0%;
+            width: 30%;
+            height: 20px;  
+        }
+        .viceDiv_3 {
+            float: right;
+            margin-left: 0%;
+            width: 30%;
+            height: 20px;  
+        }
 
 
 
@@ -103,12 +127,18 @@
 </head>
 <body>
 <div class="outer_box">
-    <div class="logo">
-        <img src="/static/logo.png">
-    </div>
     <div class="account">
+        <div class="mainDiv">
+        <div class="viceDiv_1" align="center">
         <a href="/"><img src="/static/back.png" style="width:50px;float:left;"></a>
-        <h1>Order management&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Identity: {{Role}}&emsp;&emsp;</h1>
+            </div>
+            <div class="viceDiv_2" align="center">
+             <img src="/static/logo.png" width="200">
+            </div>
+            <div class="viceDiv_3" align="center">
+             <h2>Order management</h2>
+            </div>
+        </div>
         <form class="form-inline" action="{{ url_for('order_management') }}" method="POST">
             <div class="inner1">
                 <label>Dataset Name</label>
@@ -121,8 +151,8 @@
             </div>
 
             <div class="tip">
-                <span>Input dataset name,e.g.,</span>
-                <span style="font-style: italic;">NBA player</span>
+                <span>Input dataset name, e.g.,</span>
+                <span style="font-style: italic;">NBA</span>
             </div>
 
 
@@ -138,7 +168,7 @@
             </div>
 
             <div class="tip">
-                <span>Input dataset number,e.g.,</span>
+                <span>Input order id, e.g.,</span>
                 <span style="font-style: italic;">5</span>
             </div>
 
@@ -152,8 +182,8 @@
             </div>
 
             <div class="tip">
-                <span>Input seller's name,e.g.,</span>
-                <span style="font-style: italic;">seller1</span>
+                <span>Input seller, e.g.,</span>
+                <span style="font-style: italic;">Alan</span>
             </div>
             {%endif%}
 
@@ -165,8 +195,8 @@
                 <input style="width:582px;" type="text" class="form-control" placeholder="buyer name" name="Buyer">
             </div>
             <div class="tip">
-                <span>Input buyer's name,e.g.,</span>
-                <span style="font-style: italic;">buyer1</span>
+                <span>Input buyer, e.g.,</span>
+                <span style="font-style: italic;">Bob</span>
 
             </div>
             {%endif%}
@@ -184,8 +214,8 @@
 
             </div>
             <div class="tip">
-                <span>Input create date,e.g.,</span>
-                <span style="font-style: italic;">2022.5,2022.7</span>
+                <span>Input create date, e.g.,</span>
+                <span style="font-style: italic;">20230101</span>
             </div>
 
             <div class="inner3">
